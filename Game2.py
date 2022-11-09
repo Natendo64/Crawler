@@ -8,12 +8,14 @@ monster = ''
 monster_hp = 0
 monster_gp = 0
 monster_xp = 0
+total_player_hp = 40
 player_hp = 40
 player_gp = 0
 player_xp = 0
 monster_kills = 0
 weapon = ''
 mon_wep_dam = 0
+name = 'Magic Steve'
 
 ##########################################################################
 
@@ -140,15 +142,19 @@ def goto_dungeon():
 def goto_blacksmith():
     global player_wep_dam
     global player_weapon
-#FIXME - spend 10 player_gp to add 1 to player_wep_dam
-    print('The town blacksmith grins at you as you walk in. "Hail, friend! Have you come to upgrade your weapon?"')
+    global player_gp
+    global name
+    print(f'The town blacksmith grins at you as you walk in. "Hail, friend {name}! Have you come to upgrade your weapon?"')
     print("A sign on the wall advertises this shop's speciality: '10 gp! Make your weapon hit harder!'")
     weapon_upgrade = input(f"Would you like to spend 10 gp to improve your {player_weapon}'s damage from {player_wep_dam} to {player_wep_dam +1 }? Yes or No?\n")
-#FIXME - check for player_gp, subtract player_gp
     if weapon_upgrade == 'Yes':
-        player_wep_dam += 1
-        player_weapon += '+'
-        print(f'{player_weapon}, {player_wep_dam}')
+        if player_gp < 10:
+            print('The blacksmith frowns down at you. "What is this? That\'s not enough gold."')
+        if player_gp >= 10:
+            player_gp -= 10
+            player_wep_dam += 1
+            player_weapon += '+'
+            print(f'{player_weapon}, {player_wep_dam}')
     where_to = input("Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, and Home.\n")
     if where_to == 'Dungeon':
         goto_dungeon()
@@ -160,8 +166,21 @@ def goto_blacksmith():
         goto_home()
 
 def goto_temple():
-#FIXME - Spend 10 player_xp to add 1 player_hp
-    print("You're at the Temple, but no incense is burning. There's no one here.")
+    global player_xp
+    global total_player_hp
+    global player_hp
+    global name
+    print("The Temple stands before you, ancient and imposing. A Temple Maiden Greets you.")
+    print(f'"Good day {name}. Have you come to fortify your flesh with the wisdom of your trials?"')
+    health_upgrade = input('Spend 10 experience points to improve your health by 1? Yes or No.\n')
+    if health_upgrade == 'Yes':
+        if player_xp >= 10:
+            player_xp -= 10
+            player_hp += 1
+            total_player_hp += 1
+        if player_xp < 10:
+            print(f"The Temple Maiden shakes her head sadly.")
+            print(f"My dear {name}, I am sorry. You must complete more trials before I can help you.")
     where_to = input("Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, and Home.\n")
     if where_to == 'Dungeon':
         goto_dungeon()
@@ -173,22 +192,28 @@ def goto_temple():
         goto_home()
 
 def goto_home():
-#FIXME - Rest to fully restore player_hp, or give option to give up on your quest (quit game).
     global player_hp
-    print("You're home, but you've lost your key. You can't get in.")
-    take_rest = input("Take a nap in your hammock?\n")
-    if take_rest == 'Yes':
-        player_hp = 40
+    global name
+    print(f"Welcome home, {name}. Would you like to Rest and recover HP? Or do you want to just stay inside?")
+    home_options = input("Rest or Quit?\n")
+    if home_options == 'Rest':
+        player_hp = total_player_hp
         print(f"You feel rejuvenated. Your HP is now at {player_hp}.")
-    where_to = input("Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, and Home.\n")
-    if where_to == 'Dungeon':
-        goto_dungeon()
-    if where_to == 'Blacksmith':
-        goto_blacksmith()
-    if where_to == 'Temple':
-        goto_temple()
-    if where_to == 'Home':
-        goto_home()
+        where_to = input("Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, and Home.\n")
+        if where_to == 'Dungeon':
+            goto_dungeon()
+        if where_to == 'Blacksmith':
+            goto_blacksmith()
+        if where_to == 'Temple':
+            goto_temple()
+        if where_to == 'Home':
+            goto_home()
+    if home_options == 'Quit':
+        print(f'Very well. You sit in your rocking chair and watch as darkness swallows the land.')
+        print(f'With your last breath, you know in your heart you could have stopped it, but chose to stay home.')
+        print(f'Game Over.')
+        player_hp = -10
+
 
 ################################################################################
 #--------------------GAME START----------------------#
