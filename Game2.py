@@ -1,4 +1,5 @@
 import time
+#FIXME - Need to add timing for all print functions
 import random
 
 #########################################################################
@@ -137,8 +138,17 @@ def goto_dungeon():
             goto_home()
 
 def goto_blacksmith():
+    global player_wep_dam
+    global player_weapon
 #FIXME - spend 10 player_gp to add 1 to player_wep_dam
-    print("You're at the blacksmith's, but the forge is cold. There's no one here.")
+    print('The town blacksmith grins at you as you walk in. "Hail, friend! Have you come to upgrade your weapon?"')
+    print("A sign on the wall advertises this shop's speciality: '10 gp! Make your weapon hit harder!'")
+    weapon_upgrade = input(f"Would you like to spend 10 gp to improve your {player_weapon}'s damage from {player_wep_dam} to {player_wep_dam +1 }? Yes or No?\n")
+#FIXME - check for player_gp, subtract player_gp
+    if weapon_upgrade == 'Yes':
+        player_wep_dam += 1
+        player_weapon += '+'
+        print(f'{player_weapon}, {player_wep_dam}')
     where_to = input("Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, and Home.\n")
     if where_to == 'Dungeon':
         goto_dungeon()
@@ -183,7 +193,8 @@ def goto_home():
 ################################################################################
 #--------------------GAME START----------------------#
 
-#FIXME - Add Character Creation Codes Here
+#FIXME - Add Character Creation Codes Here or create a function
+#FIXME - Add initial player_weapon to Character Creation
 while player_hp <= 0:
     break
 
