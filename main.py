@@ -75,6 +75,10 @@ player_xp = 0
 monster_kills = 0
 weapon = ''
 mon_wep_dam = 0
+monster_gp_mult = 1
+monster_xp_mult = 1
+total_player_hp = 40
+wep_dam_mult = 1
 
 
 def troll_c():
@@ -184,9 +188,9 @@ def make_monster():
 
 #FIXME - add Curtis' gold generation code
     global monster_gp
-    monster_gp = monster_hp * 2
+    monster_gp = monster_hp
     global monster_xp
-    monster_xp = monster_hp * 2
+    monster_xp = monster_hp
 #Monster Weapon Generator
 def make_weapon():
     ran_mon_wep_mat = random.choice(weapon_mat)
@@ -215,13 +219,17 @@ def monster_fight():
     global mon_wep_dam
     global player_weapon
     global player_wep_dam
+    global monster_gp_mult
+    global monster_xp_mult
+    global total_player_hp
+    global wep_dam_mult
     print(f'\033[1mYou encountered a \033[4m{monster}\033[0m \033[1mwielding a \033[4m{weapon}\033[0m.\033[0m\n')
     while monster_hp > 0:
         print(f'\033[1mThe {monster} hit you!\033[0m')
         player_hp -= mon_wep_dam
 
         print(f'\033[1mYou hit the {monster}!\033[0m\n')
-        monster_hp -= player_wep_dam
+        monster_hp -= (player_wep_dam * wep_dam_mult)
         if player_hp <= 0:
             print("\033[1mYou're dead, game over\033[0m")
             break
@@ -229,8 +237,8 @@ def monster_fight():
             if monster_hp <= 0:
                 print('\033[1mCongratulations {name}, you killed it!\033[0m\n')
                 #
-                player_gp += monster_gp
-                player_xp += monster_xp
+                player_gp += (monster_gp * monster_gp_mult)
+                player_xp += (monster_xp * monster_xp_mult)
                 monster_kills += 1
                 print(f'\033[1mPlayer GP: {player_gp}, Player XP: {player_xp}, Monsters Killed: {monster_kills}\033[0m')
                 new_wep = input(f"\033[1mDo you want to keep the {monster}'s {weapon}, and throw away your {player_weapon}? (Yes/No)\033[0m\n")
@@ -357,7 +365,7 @@ underline = '\33[4m'
 # At character creation, each class receives a bonus to a certain game stat, based on the class chosen.
 # Dwarves: Starting Health is higher (like 30 instead of 20)
 # Elves: More XP (when xp is earned after defeating a boss, multiply by 2 instead of 1
-# Dragonkin: More GP (same as Elves, but for gp instead)
+# Dragonskin: More GP (same as Elves, but for gp instead)
 # Goliaths: More damage (player weapon damage is multiplied by 2)
 # Humans: Multiplier of 1.3 to everything
 
@@ -365,7 +373,7 @@ underline = '\33[4m'
 # startname is what is going to be used throughout the entirety of the game.
 
 # def startname():
-#    name = input("Ahhh, another potential soul is amongst us. Tell us, what is you're name? \n")
+#    name = input("Ahhh, another potential soul is amongst us. Tell us, what is your name? \n")
 #    print(f'{name}..... What a fascinating name')
 
 
@@ -375,7 +383,7 @@ underline = '\33[4m'
 def respawn():
     print(
         "We see, now let us begin the reincarnation process.\nWe will bestow upon your choices.\n1. Human (All-rounder)"
-        "\n2. Elves (Extra XP)\n3. Dwarves (Hearty)\n4. Goliaths (Extra Pow)\n5. Dragonkin (Extra Gold)")
+        "\n2. Elves (Extra XP)\n3. Dwarves (Hearty)\n4. Goliaths (Extra Pow)\n5. Dragonskin (Extra Gold)")
 
 
 # this is now going to be the list of characters as they are connected to the main screen
@@ -383,98 +391,83 @@ def respawn():
 
 # each character is going to recieve
 def dwarf():
+    global monster_gp_mult
+    global monster_xp_mult
+    global total_player_hp
+    global wep_dam_mult
     print("You have chosen Dwarf")
-    print("As a Dwarf ou now have increased HP!")
-    monster = ''
-    monster_hp = 0
-    monster_gp = 0
-    monster_xp = 0
-    total_player_hp = 40
-    player_hp = 60
-    player_gp = 0
-    player_xp = 0
-    monster_kills = 0
-    weapon = ''
-    mon_wep_dam = 0
+    print("As a Dwarf you now have increased HP!")
+    monster_gp_mult = 1
+    monster_xp_mult = 1
+    total_player_hp = 60
+    wep_dam_mult = 1
     name = input("Now that we have you class what is your name...\n")
 
 
 def elf():
+    global monster_gp_mult
+    global monster_xp_mult
+    global total_player_hp
+    global wep_dam_mult
     print("You have chosen Elf")
     print("As an Elf you now have Double XP")
-    monster = ''
-    monster_hp = 0
-    monster_gp = 0
-    monster_xp = 0
+    monster_gp_mult = 1
+    monster_xp_mult = 2
     total_player_hp = 40
-    player_hp = 40
-    player_gp = 0
-    player_xp = '' * 2
-    monster_kills = 0
-    weapon = ''
-    mon_wep_dam = 0
+    wep_dam_mult = 1
     name = input("Now that we have you class what is your name...\n")
 
 
 
 def dragonskin():
+    global monster_gp_mult
+    global monster_xp_mult
+    global total_player_hp
+    global wep_dam_mult
     print("You have chosen Dragonskin")
     print("As a Dragonskin you now have Double GP")
-    monster = ''
-    monster_hp = 0
-    monster_gp = 0
-    monster_xp = 0
+    monster_gp_mult = 2
+    monster_xp_mult = 1
     total_player_hp = 40
-    player_hp = 40
-    player_gp = 0
-    player_xp = '' * 2
-    monster_kills = 0
-    weapon = ''
-    mon_wep_dam = 0
+    wep_dam_mult = 1
     name = input("Now that we have you class what is your name...\n")
 
 
 
 
 def goliath():
+    global monster_gp_mult
+    global monster_xp_mult
+    global total_player_hp
+    global wep_dam_mult
     print("You have chosen Goliath")
     print("As a Goliath you now have double weapon damage")
-    monster = ''
-    monster_hp = 0
-    monster_gp = 0
-    monster_xp = 0
+    monster_gp_mult = 1
+    monster_xp_mult = 1
     total_player_hp = 40
-    player_hp = 40
-    player_gp = 0
-    player_xp = 0
-    monster_kills = 0
-    weapon = ''
-    mon_wep_dam = '' * 2
+    wep_dam_mult = 2
     name = input("Now that we have you class what is your name...\n")
 
 
 
 
 def human():
+    global monster_gp_mult
+    global monster_xp_mult
+    global total_player_hp
+    global wep_dam_mult
     print("You have chosen Human")
-    monster = ''
-    monster_hp = 0
-    monster_gp = 0
-    monster_xp = 0
-    total_player_hp = 50
-    player_hp = 50
-    player_gp = '' * 2
-    player_xp = '' * 2
-    monster_kills = 0
-    weapon = ''
-    mon_wep_dam = 0
+    monster_gp_mult = 1.2
+    monster_xp_mult = 1.2
+    total_player_hp = 45
+    wep_dam_mult = 1.2
     print("As a Human you now have a 20% BUFF in HP, GP, and XP")
     name = input("Now that we have you class what is your name...\n")
 
 
 
 def character_selection():
-    print("You now have the choice to choose you class.")
+    print("You now have the choice to choose your class.")
     time.sleep(.5)
     print("There are several classes and all have their advantages so choose wisely...")
     print('')
@@ -482,12 +475,12 @@ def character_selection():
     text = "CHARACTER SELECTION MENU"
     underlined_text = "\x1B[4m" + text + "\x1B[0m"
     print(underlined_text)
-    print("1 - DWARF (INCREASED PLAYER XP)")
+    print("1 - DWARF (INCREASED PLAYER HP)")
     print("2 - ELF (DOUBLE XP)")
     print("3 - DRAGONSKIN (DOUBLE GP)")
     print("4 - GOLIATH (DOUBLE DAMAGE)")
     print("5 - HUMAN (COMPLETE 20% STAT INCREASE (INCREASED HP, GP, AND XP))")
-    print("PLEASE SELECT FROM.. (1,2,3,4, 5) ")
+    print("PLEASE SELECT FROM.. (1, 2, 3, 4, or 5) ")
 
     sel = input()
     if sel == '1':
