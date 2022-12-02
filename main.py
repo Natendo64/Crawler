@@ -269,11 +269,10 @@ def monster_fight():
         if player_hp > 0:
             if monster_hp <= 0:
 
-                print("\033[1mCongratulations \033[0m\n" + name + "\033[1m you killed it.\033[0m\n".format(name))
+                print("\033[1mCongratulations \033[0m" + name + "\033[1m you killed it.\033[0m\n".format(name))
                 #
                 player_gp += (monster_gp * monster_gp_mult)
                 player_xp += (monster_xp * monster_xp_mult)
-                player_xp += monster_xp
                 monster_kills += 1
                 print(f'\033[1mPlayer GP: {player_gp}, Player XP: {player_xp}, Monsters Killed: {monster_kills}\033[0m')
                 new_wep = input(f"\033[1mDo you want to keep the {monster}'s {weapon}, and throw away your {player_weapon}? (Yes/No)\033[0m\n")
@@ -323,7 +322,7 @@ def goto_blacksmith():
     global player_wep_dam
     global player_weapon
     global player_gp
-    print(f'The town blacksmith grins at you as you walk in. "Hail, friend! Have you come to upgrade your weapon?"')
+    print(f'The town blacksmith grins at you as you walk in. "Hail, {name}! Have you come to upgrade your weapon?"')
     print("A sign on the wall advertises this shop's speciality: '10 gp! Make your weapon hit harder!'")
     weapon_upgrade = input(f"Would you like to spend 10 gp to improve your {player_weapon}'s damage from {player_wep_dam} to {player_wep_dam +1 }? Yes or No?\n")
     if weapon_upgrade == 'Yes':
@@ -423,7 +422,7 @@ underline = '\33[4m'
 def respawn():
     print(
         "We see, now let us begin the reincarnation process.\nWe will bestow upon your choices.\n1. Human (All-rounder)"
-        "\n2. Elves (Extra XP)\n3. Dwarves (Hearty)\n4. Goliaths (Extra Pow)\n5. Dragonkin (Extra Gold)")
+        "\n2. Elves (Extra XP)\n3. Dwarves (Hearty)\n4. Goliaths (Extra Power)\n5. Dragonkin (Extra Gold)")
 
 
 
@@ -524,20 +523,20 @@ def human():
 
 
 def character_selection():
-    print("You now have the choice to choose you class.")
+    print("You now have the choice to choose your class.")
     time.sleep(.5)
-    print("There are several classes and all have their advantages so choose wisely...")
+    print("There are several classes and all have their advantages, so choose wisely...")
     print('')
     time.sleep(.5)
     text = "CHARACTER SELECTION MENU"
     underlined_text = "\x1B[4m" + text + "\x1B[0m"
     print(underlined_text)
-    print("1 - DWARF (INCREASED PLAYER XP)")
+    print("1 - DWARF (INCREASED PLAYER HP)")
     print("2 - ELF (DOUBLE XP)")
     print("3 - DRAGONSKIN (DOUBLE GP)")
     print("4 - GOLIATH (DOUBLE DAMAGE)")
     print("5 - HUMAN (COMPLETE 20% STAT INCREASE (INCREASED HP, GP, AND XP))")
-    print("PLEASE SELECT FROM.. (1,2,3,4, 5) ")
+    print("PLEASE SELECT FROM.. (1, 2, 3, 4, or 5) ")
 
     sel = input()
     if sel == '1':
