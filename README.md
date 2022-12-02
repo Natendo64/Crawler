@@ -1,7 +1,7 @@
 # Crawler
 
 PLAY ONLINE NOW!
-https://trinket.io/python3/27b780c0e0?outputOnly=true&runOption=run
+https://trinket.io/python3/cb115c04ca?outputOnly=true
 
 TODO LIST
  - "Prettying it up"
