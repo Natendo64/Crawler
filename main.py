@@ -100,9 +100,9 @@ wep_dam_mult = 1
 
 def troll_c():
     print("  ⋌⁻⁻⋋.-⁻⁻⁻⁻⁻-.⋌⁻⁻⋋  ")
-    print("  \ ./        \. /  ")
-    print("   \ | ≤≥⁽  ⁾≤≥ |/   ")
-    print("    ⋁\._^__^_./⋁     ")
+    print("  \ ./          \. /  ")
+    print("   \ | ≤≥⁽  ⁾≤≥ | /   ")
+    print("    ⋁\ ._^__^_. /⋁     ")
     return
 
 
@@ -131,19 +131,19 @@ def goblin_c():
 
 
 def orc_c():
-    print('       .------.          ')
-    print('   .  / __  __ \ .')
-    print("    \⸃) ≤≥\∨/≤≥ (⸂/   ")
-    print('      \ ▴_\/_▴ / ')
-    print("       \______/   ")
+    print('      .------.          ')
+    print('  .  / __  __ \ .')
+    print("   \⸃) ≤≥\∨/≤≥ (⸂/   ")
+    print('     \ ▴_\/_▴ / ')
+    print("      \______/   ")
     return
 
 
 def hobgoblin_c():
-    print("      .-⁻⁻⁻⁻⁻⁻-.   ")
-    print("     / ⋰⋱  ⋰⋱ \  ")
-    print("    /⋰≤≥ \ / ≤≥⋱\ ")
-    print("    ∖⋱         ⋰/ ")
+    print("     .-⁻⁻⁻⁻⁻⁻⁻-.   ")
+    print("    / ⋰⋱   ⋰⋱ \  ")
+    print("   /⋰≤≥ \  / ≤≥⋱\ ")
+    print("   ∖⋱          ⋰/ ")
     return
 
 
