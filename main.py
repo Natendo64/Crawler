@@ -123,10 +123,10 @@ def ratman_c():
 
 
 def goblin_c():
-    print('      .-----.    ')
-    print("    \⸃)      (⸂/   ")
-    print('     \≤≥ ⋎ ≤≥/    ')
-    print("      '^---^'   ")
+    print('       .-----.    ')
+    print("     \⸃)      (⸂/   ")
+    print('      \≤≥ ⋎ ≤≥/    ')
+    print("       '^---^'   ")
     return
 
 
@@ -148,9 +148,9 @@ def hobgoblin_c():
 
 
 def body_figure1():
-    print('      .⁻⁻||⁻⁻.')
-    print("     / / || \ \ ")
-    print('    (_/  ||  \_)')
+    print('     .⁻⁻||⁻⁻.')
+    print("    / / || \ \ ")
+    print('   (_/  ||  \_)')
 
 
 def body_figure2():
