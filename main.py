@@ -123,10 +123,10 @@ def ratman_c():
 
 
 def goblin_c():
-    print('        .-----.    ')
-    print("      \⸃)      (⸂/   ")
-    print('       \≤≥ ⋎ ≤≥/    ')
-    print("        '^---^'   ")
+    print('      .-----.    ')
+    print("    \⸃)      (⸂/   ")
+    print('     \≤≥ ⋎ ≤≥/    ')
+    print("      '^---^'   ")
     return
 
 
