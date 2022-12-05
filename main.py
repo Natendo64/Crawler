@@ -160,9 +160,9 @@ def body_figure2():
 
 
 def body_figure3():
-    print('     .⁻⁻    ⁻⁻.')
-    print("    / /\    /\ \ ")
-    print('   (_/ |    | \_)')
+    print('      .⁻⁻    ⁻⁻.')
+    print("     / /\    /\ \ ")
+    print('    (_/ |    | \_)')
 
 
 def body_figure4():
