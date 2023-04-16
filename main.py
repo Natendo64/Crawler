@@ -93,6 +93,16 @@ player_xp = 0
 monster_kills = 0
 weapon = ''
 mon_wep_dam = 0
+mon_wep_value = 0
+armor = ''
+mon_armor_points = 0
+mon_armor_value = 0
+ran_junk1 = ''
+ran_junk2 = ''
+ran_treasure = ''
+junk1_value = 0
+junk2_value = 0
+treasure_valure = 0
 monster_gp_mult = 1
 monster_xp_mult = 1
 wep_dam_mult = 1
@@ -178,15 +188,27 @@ def body_figure5():
 
 
 ##########################################################################
+
 #Monster List
 monster_size = ['Puny', 'Smallish', 'Average-sized', 'Beefy', 'Huge']
 monster_type = ['Cave', 'Swamp', 'Forest', 'Desert', 'Snow']
 monster_race = ['Ratman', 'Goblin', 'Orc', 'Hobgoblin', 'Troll']
 monster_rank = ['Scout', 'Bandit', 'Warrior', 'Chief', 'Lord']
+
 #Weapon List
 weapon_mat = ['wooden', 'iron', 'steel', 'mithril', 'crystal']
 weapon_type = ['stick', 'dagger', 'sword', 'axe', 'hammer', 'maul']
+
+#Armor List
+armor_mat = ['cloth', 'leather', 'chain', 'steel', 'mithril', 'crystal']
+armor_type = ['shirt', 'breastplate', 'suit']
+
+#Random Loot List
+junk_loot = ["some pocket lint", "a decent-looking crust of bread", "a cool bird skull", "a robin's egg", "a short piece of string", "a bit of cheese", "the keys to a 96 Geo Metro"]
+treasure_loot = ["10 gold pieces", "a pair of silver earrings", "a bronze ceremonial dagger", "a bag of shiny rocks", "a book of poetry in an unknown language", "about two thirds of a gold ingot", "an obsidian sculpture of an Ancient god", "a ruby the size of your fist", "a gold and sapphire circlet", "a perfectly clear diamond"]
+
 ###########################################################################
+
 #Monster Generator
 def make_monster():
     ran_mon_size = random.choice(monster_size)
@@ -197,7 +219,8 @@ def make_monster():
     monster = ran_mon_size + ' ' + ran_mon_type + ' ' + ran_mon_race + ' ' + ran_mon_rank
     global monster_hp
     monster_hp = int(monster_size.index(ran_mon_size)) + int(monster_type.index(ran_mon_type)) + int(monster_race.index(ran_mon_race)) + int(monster_rank.index(ran_mon_rank)) + 4
-    #body for everyone
+
+#body for everyone
     #'Ratman', 'Goblin', 'Orc', 'Hobgoblin', 'Troll'
     if ran_mon_race == 'Orc':
         orc_c()
@@ -228,6 +251,18 @@ def make_monster():
     monster_gp = monster_hp * 2
     global monster_xp
     monster_xp = monster_hp * 2
+
+#Monster Armor Generator
+def make_armor():
+    ran_mon_armor_mat = random.choice(armor_mat)
+    ran_mon_armor_type = random.choice(armor_type)
+    global armor
+    armor = ran_mon_armor_mat + ' ' + ran_mon_armor_type
+    global mon_armor_points
+    mon_armor_points = ((int(armor_mat.index(ran_mon_armor_mat)) + int(armor_type.index(ran_mon_armor_type)) + 2) / 2)
+    global mon_armor_worth
+    mon_armor_worth = int(mon_armor_points * 2)
+
 #Monster Weapon Generator
 def make_weapon():
     ran_mon_wep_mat = random.choice(weapon_mat)
@@ -236,13 +271,35 @@ def make_weapon():
     weapon = ran_mon_wep_mat + ' ' + ran_mon_wep_type
     global mon_wep_dam
     mon_wep_dam = int(weapon_mat.index(ran_mon_wep_mat)) + int(weapon_type.index(ran_mon_wep_type)) + 2
+
+#Monster Loot Generator
+def make_loot():
+    ran_junk1 = random.choice(junk_loot)
+    junk1_value = 1
+    ran_junk2 = random.choice(junk_loot)
+    junk2_value = 1
+    ran_treasure = random.choice(treasure_loot)
+    treasure_value = int(treasure_loot.index(ran_treasure))*10
+    global monster_bag
+    monster_bag = ran_junk1 + ', ' + ran_junk2 + ', ' + ran_treasure
+    global monster_bag_value
+    monster_bag_value = int(junk1_value + junk2_value + treasure_value)
+
 #---------------------------------------------------------------------
+
 #Player Weapon Generator
 ran_play_wep_mat = random.choice(weapon_mat)
 ran_play_wep_type = random.choice(weapon_type)
 player_weapon = ran_play_wep_mat + ' ' + ran_play_wep_type
 player_wep_dam = int(weapon_mat.index(ran_play_wep_mat)) + int(weapon_type.index(ran_play_wep_type)) + 2
+
+#Player Armor Generator
+player_armor = "Old Rags"
+player_armor_points = 0
+
 ##########################################################################
+##########################################################################
+
 def monster_fight():
     global monster
     global monster_hp
@@ -256,40 +313,68 @@ def monster_fight():
     global mon_wep_dam
     global player_weapon
     global player_wep_dam
-    print(f'\033[1mYou encountered a \033[4m{monster}\033[0m \033[1mwielding a \033[4m{weapon}\033[0m.\033[0m\n')
+    global armor
+    global mon_armor_points
+    global player_armor
+    global player_armor_points
+    total_damage = player_wep_dam - mon_armor_points
+    #FIXME Update Armor Dialogue
+    print(f'You encountered a {monster} wielding a {weapon}. It appears to be wearing a {armor}.')
     while monster_hp > 0:
-        print(f'\033[1mThe {monster} hit you!\033[0m')
-        player_hp -= mon_wep_dam
+        #monster attack
+        if player_armor_points < mon_wep_dam:
+            print(f'The {monster} hit you! It dealt {mon_wep_dam} damage. Your {player_armor} reduced the damage by {player_armor_points} points.')
+            player_hp -= (mon_wep_dam - player_armor_points)
+            print(f"You have {player_hp} HP left.")
+        else:
+            print(f'Your {player_armor} absorbed all the damage!')
+#FIXME Should we have the player hp check here
+        #player attack
+        if player_wep_dam > mon_armor_points:
+            print(f'You hit the {monster}! You did {player_wep_dam} damage, but it looks like the {armor} reduced it by {mon_armor_points} points.')
+            monster_hp -= total_damage
+            print(f"The {monster} has {monster_hp} HP left.")
+        else:
+            print("The armor negated the damage....")
+            print(f"The {monster} still has {monster_hp} HP left.")
 
-        print(f'\033[1mYou hit the {monster}!\033[0m\n')
-        monster_hp -= (player_wep_dam * wep_dam_mult)
+        #player hp check
         if player_hp <= 0:
-            print("\033[1mYou're dead, game over\033[0m")
+            print("You're dead, game over.")
             break
         if player_hp > 0:
             if monster_hp <= 0:
-
-                print("\033[1mCongratulations \033[0m" + name + "\033[1m you killed it.\033[0m\n".format(name))
-                #
-                player_gp += (monster_gp * monster_gp_mult)
-                player_xp += (monster_xp * monster_xp_mult)
+                print('Congratulations, you killed it!')
+                player_xp += monster_xp
                 monster_kills += 1
-                print(f'\033[1mPlayer GP: {player_gp}, Player XP: {player_xp}, Monsters Killed: {monster_kills}\033[0m')
-                new_wep = input(f"\033[1mDo you want to keep the {monster}'s {weapon}, and throw away your {player_weapon}? (Yes/No)\033[0m\n")
+                print(f"You loot the {monster} and find a bag containing {monster_bag}, and {monster_gp} gold pieces.")
+                print(f"Of course, it's also carrying its {weapon} and wearing that {armor}.")
+                new_wep = input(f"Do you want to keep the {monster}'s {weapon}, and put your {player_weapon} away?\n")
                 if new_wep == 'Yes':
                     player_weapon = weapon
-                    print(f"\033[1mSweet! You've got a nice new {weapon} now.\033[0m")
-                    print(f"")
+                    print(f"Sweet! You've got a nice new {weapon} now.")
                 elif new_wep == 'No':
-                    print(f"\033[1mYou leave the {weapon} where it was.\033[0m")
+                    print(f"You leave the {weapon} where it was.")
                 else:
-                    print(f"\033[1mInvalid command.\033[0m")
+                    print(f"Invalid command.")
+                new_armor = input(f"Do you want to put on the {monster}'s {armor}?\n")
+                if new_armor == 'Yes':
+                    player_armor = armor
+                    player_armor_points = mon_armor_points
+                    print(f"Somehow, the {monster}'s {armor} fits you perfectly. This ought to help some.")
+                elif new_wep == 'No':
+                    print(f"Yeah, that makes sense. Peeling a {armor} off a dead guy? Ew.")
+                else:
+                    print(f"Invalid command.")
+                player_gp += monster_gp
+                print(f'Player GP: {player_gp}, Player XP: {player_xp}, Monsters Killed: {monster_kills}')
             if monster_hp > 0:
-                keepon = input('\033[1mWhat do you want to do? Attack or Run?\033[0m\n')
+                keepon = input('What do you want to do? Attack or Run?\n')
                 if keepon != 'Attack' and keepon != 'Run':
-                    print('\033[1mYour only options are to Attack or Run. You must choose one.\033[0m')
+                    print('Your only options are to Attack or Run. You must choose one.')
                 if keepon == 'Run':
                     break
+
 def goto_dungeon():
     wp()
     insert_logo()
@@ -298,6 +383,8 @@ def goto_dungeon():
     if enter_dungeon == 'Yes' or enter_dungeon == 'yes':
         make_monster()
         make_weapon()
+        make_armor()
+        make_loot()
         monster_fight()
     if player_gp >= 100:
         print("Congratulations! You've earned enough gold to settle down and retire.\nGame over.")
