@@ -390,14 +390,14 @@ def goto_dungeon():
         make_armor()
         make_loot()
         monster_fight()
-    if player_gp >= 100:
+    if player_gp >= 500:
         print("Congratulations! You've earned enough gold to settle down and retire.\nGame over.")
-    elif monster_kills >= 10:
+    elif monster_kills >= 20:
         print("Congratulations! Your efforts have successfully purged evil from this land. You may now rest.\nGame over.")
     elif player_hp <= 0:
         print("You're dead, game over.")
     else:
-        where_to = input("Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, and Home.\n")
+        where_to = input(f"Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, Merchant, and Home.\n")
         if where_to == 'Dungeon':
             goto_dungeon()
         if where_to == 'Blacksmith':
@@ -406,7 +406,8 @@ def goto_dungeon():
             goto_temple()
         if where_to == 'Home':
             goto_home()
-
+        if where_to == 'Merchant':
+            goto_merchant()
 def goto_blacksmith():
     wp()
     insert_logo()
@@ -424,7 +425,7 @@ def goto_blacksmith():
             player_wep_dam += 1
             player_weapon += '+'
             print(f'{player_weapon} {player_wep_dam}')
-    where_to = input("Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, and Home.\n")
+    where_to = input(f"Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, Merchant, and Home.\n")
     if where_to == 'Dungeon':
         goto_dungeon()
     if where_to == 'Blacksmith':
@@ -433,6 +434,8 @@ def goto_blacksmith():
         goto_temple()
     if where_to == 'Home':
         goto_home()
+    if where_to == 'Merchant':
+        goto_merchant()
 
 def goto_temple():
     wp()
@@ -440,7 +443,7 @@ def goto_temple():
     global player_xp
     global total_player_hp
     global player_hp
-    #need to remove the function 'gloabal name' and then add it back.2
+    #need to remove the function 'global name' and then add it back.2
 
     print("The Temple stands before you, ancient and imposing. A Temple Maiden Greets you.")
     #add name into the Good Day (name) part
@@ -454,7 +457,7 @@ def goto_temple():
         if player_xp < 10:
             print(f"The Temple Maiden shakes her head sadly.")
             print(f"My dear {name}, I am sorry. You must complete more trials before I can help you.")
-    where_to = input("Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, and Home.\n")
+    where_to = input(f"Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, Merchant, and Home.\n")
     if where_to == 'Dungeon':
         goto_dungeon()
     if where_to == 'Blacksmith':
@@ -463,17 +466,61 @@ def goto_temple():
         goto_temple()
     if where_to == 'Home':
         goto_home()
+    if where_to == 'Merchant':
+        goto_merchant()
+
+def goto_merchant():
+    print(f"Store's closed.")
+    where_to = input(f"Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, Merchant, and Home.\n")
+    if where_to == 'Dungeon':
+        goto_dungeon()
+    if where_to == 'Blacksmith':
+        goto_blacksmith()
+    if where_to == 'Temple':
+        goto_temple()
+    if where_to == 'Home':
+        goto_home()
+    if where_to == 'Merchant':
+        goto_merchant()
+
 
 def goto_home():
     wp()
     insert_logo()
     global player_hp
-    print(f"Welcome home, {name}. Would you like to Rest and recover HP? Or do you want to just stay inside?")
-    home_options = input("Rest or Quit?\n")
+    print(f"Welcome home, {name}. Do you need to Store items? Or perhaps Retrieve something? Would you like to Rest and recover HP? Or do you want to just stay inside? If not, you can Leave.")
+    home_options = input("Store, Retrieve, Rest, Quit, or Leave?\n")
+
+    if home_options == "Store":
+        print(f"What items would you like to store in your vault?")
+        #FIXME list player inventory
+        #remove items from player inventory
+        #add items to home inventory
+        print(f"What would you like to do now? Do you wish to rest? Do you need to get anything out of storage? Would you like to stay inside forever? Or do you have business elsewhere?")
+        home_options = input("Rest, Retrieve, Quit, or Leave?\n")
+
+    if home_options == 'Retrieve':
+        print(f"What items would you like to store in your vault?")
+        # FIXME list home inventory
+        # remove items from home inventory
+        # add items to player inventory
+        print(f"What would you like to do now? Do you need to store any items? Do you wish to rest? Would you like to stay inside forever? Or do you have business elsewhere?")
+        home_options = input("Store, Rest, Quit, or Leave?\n")
+
     if home_options == 'Rest':
         player_hp = total_player_hp
         print(f"You feel rejuvenated. Your HP is now at {player_hp}.")
-        where_to = input("Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, and Home.\n")
+        print(f"What would you like to do now? Do you need to Store or Retrieve some items? Or would you like to stay inside forever? Or are you finished at home?")
+        home_options = input("Store, Retrieve, Quit, or Leave?\n")
+
+    if home_options == 'Quit':
+        print(f'Very well. You sit in your rocking chair and watch as darkness swallows the land.')
+        print(f'With your last breath, you know in your heart you could have stopped it, but chose to stay home.')
+        print(f'Game Over.')
+        player_hp = -10
+
+    if home_options == 'Leave':
+        where_to = input(f"Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, Merchant, and Home.\n")
         if where_to == 'Dungeon':
             goto_dungeon()
         if where_to == 'Blacksmith':
@@ -482,11 +529,8 @@ def goto_home():
             goto_temple()
         if where_to == 'Home':
             goto_home()
-    if home_options == 'Quit':
-        print(f'Very well. You sit in your rocking chair and watch as darkness swallows the land.')
-        print(f'With your last breath, you know in your heart you could have stopped it, but chose to stay home.')
-        print(f'Game Over.')
-        player_hp = -10
+        if where_to == 'Merchant':
+            goto_merchant()
 
 
 underline = '\33[4m'
