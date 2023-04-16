@@ -1,4 +1,7 @@
 def wp():
+    import os
+
+    os.system('cls')
     print()
     print()
     print()

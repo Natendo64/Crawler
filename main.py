@@ -1,5 +1,6 @@
 # FIXME - Need to add timing for all print functions
 import random
+import os 
 from storyline import *
 from logo_d import *
 from wpog import *
@@ -12,6 +13,7 @@ name = input("Before we go on our quest what shall I call you?\n")
 
 
 def title():
+    os.system('cls')
     wp()
     insert_logo()
     print('\x1B[3mAre you ready to begin your journey against the forces of infinite darkness?')
@@ -301,6 +303,7 @@ player_armor_points = 0
 ##########################################################################
 
 def monster_fight():
+    import os
     global monster
     global monster_hp
     global monster_gp
@@ -376,6 +379,7 @@ def monster_fight():
                     break
 
 def goto_dungeon():
+    os.system('cls')
     wp()
     insert_logo()
     dungeon_journey()
@@ -404,6 +408,7 @@ def goto_dungeon():
             goto_home()
 
 def goto_blacksmith():
+    os.system('cls')
     wp()
     insert_logo()
     global player_wep_dam
@@ -431,6 +436,7 @@ def goto_blacksmith():
         goto_home()
 
 def goto_temple():
+    os.system('cls')
     wp()
     insert_logo()
     global player_xp
@@ -461,6 +467,7 @@ def goto_temple():
         goto_home()
 
 def goto_home():
+    os.system('cls')
     wp()
     insert_logo()
     global player_hp
