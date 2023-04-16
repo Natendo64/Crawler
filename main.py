@@ -1,6 +1,5 @@
 # FIXME - Need to add timing for all print functions
 import random
-import os 
 from storyline import *
 from logo_d import *
 from wpog import *
@@ -13,7 +12,6 @@ name = input("Before we go on our quest what shall I call you?\n")
 
 
 def title():
-    os.system('cls')
     wp()
     insert_logo()
     print('\x1B[3mAre you ready to begin your journey against the forces of infinite darkness?')
@@ -303,7 +301,6 @@ player_armor_points = 0
 ##########################################################################
 
 def monster_fight():
-    import os
     global monster
     global monster_hp
     global monster_gp
@@ -321,17 +318,22 @@ def monster_fight():
     global player_armor
     global player_armor_points
     total_damage = player_wep_dam - mon_armor_points
-    #FIXME Update Armor Dialogue
+
     print(f'You encountered a {monster} wielding a {weapon}. It appears to be wearing a {armor}.')
     while monster_hp > 0:
         #monster attack
         if player_armor_points < mon_wep_dam:
             print(f'The {monster} hit you! It dealt {mon_wep_dam} damage. Your {player_armor} reduced the damage by {player_armor_points} points.')
             player_hp -= (mon_wep_dam - player_armor_points)
-            print(f"You have {player_hp} HP left.")
+            # player hp check
+            if player_hp <= 0:
+                print("You're dead, game over.")
+                break
+            else:
+                print(f"You have {player_hp} HP left.")
         else:
             print(f'Your {player_armor} absorbed all the damage!')
-#FIXME Should we have the player hp check here
+
         #player attack
         if player_wep_dam > mon_armor_points:
             print(f'You hit the {monster}! You did {player_wep_dam} damage, but it looks like the {armor} reduced it by {mon_armor_points} points.')
@@ -341,10 +343,6 @@ def monster_fight():
             print("The armor negated the damage....")
             print(f"The {monster} still has {monster_hp} HP left.")
 
-        #player hp check
-        if player_hp <= 0:
-            print("You're dead, game over.")
-            break
         if player_hp > 0:
             if monster_hp <= 0:
                 print('Congratulations, you killed it!')
@@ -354,17 +352,20 @@ def monster_fight():
                 print(f"Of course, it's also carrying its {weapon} and wearing that {armor}.")
                 new_wep = input(f"Do you want to keep the {monster}'s {weapon}, and put your {player_weapon} away?\n")
                 if new_wep == 'Yes':
+                    #FIXME Add player_weapon to player_inv_weps
+                    print(f"Sweet! You've got a nice new {weapon} now. You toss that piece of junk {player_weapon} in your bag. Maybe it'll be worth a few gold.")
                     player_weapon = weapon
-                    print(f"Sweet! You've got a nice new {weapon} now.")
                 elif new_wep == 'No':
                     print(f"You leave the {weapon} where it was.")
                 else:
                     print(f"Invalid command.")
                 new_armor = input(f"Do you want to put on the {monster}'s {armor}?\n")
                 if new_armor == 'Yes':
+                    print(f"You pull your {player_armor} off and store it neatly in your pack.")
+                    #FIXME Add player_armor to player_inv_armor
                     player_armor = armor
                     player_armor_points = mon_armor_points
-                    print(f"Somehow, the {monster}'s {armor} fits you perfectly. This ought to help some.")
+                    print(f"You put on the {monster}'s {armor}, which somehow fits you perfectly. This ought to help out.")
                 elif new_wep == 'No':
                     print(f"Yeah, that makes sense. Peeling a {armor} off a dead guy? Ew.")
                 else:
@@ -379,11 +380,10 @@ def monster_fight():
                     break
 
 def goto_dungeon():
-    os.system('cls')
     wp()
     insert_logo()
     dungeon_journey()
-    enter_dungeon = input("Do you wish to enter the Dungeon " + name +"? (Yes/No)\n")
+    enter_dungeon = input("Do you wish to enter the Dungeon, " + name +"? (Yes/No)\n")
     if enter_dungeon == 'Yes' or enter_dungeon == 'yes':
         make_monster()
         make_weapon()
@@ -408,7 +408,6 @@ def goto_dungeon():
             goto_home()
 
 def goto_blacksmith():
-    os.system('cls')
     wp()
     insert_logo()
     global player_wep_dam
@@ -436,7 +435,6 @@ def goto_blacksmith():
         goto_home()
 
 def goto_temple():
-    os.system('cls')
     wp()
     insert_logo()
     global player_xp
@@ -467,7 +465,6 @@ def goto_temple():
         goto_home()
 
 def goto_home():
-    os.system('cls')
     wp()
     insert_logo()
     global player_hp
@@ -644,7 +641,7 @@ def character_selection():
     elif sel == '5':
         human()
 #fix underline in character selection
-#NEED TO DO - Add Name fucntionS
+#NEED TO DO - Add Name functions
 
 ################################################################################
 
@@ -676,7 +673,3 @@ if where_to == 'Temple':
     goto_temple()
 if where_to == 'Home':
     goto_home()
-
-
-
-
