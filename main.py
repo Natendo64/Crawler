@@ -1,5 +1,6 @@
 # FIXME - Need to add timing for all print functions
 import random
+import os 
 from storyline import *
 from logo_d import *
 from wpog import *
@@ -12,6 +13,7 @@ name = input("Before we go on our quest what shall I call you?\n")
 
 
 def title():
+    os.system('cls')
     wp()
     insert_logo()
     print('\x1B[3mAre you ready to begin your journey against the forces of infinite darkness?')
@@ -298,9 +300,41 @@ player_armor = "Old Rags"
 player_armor_points = 0
 
 ##########################################################################
-##########################################################################
+
+def merchant():
+    print('You have come across a merchant. What would you like to do?')
+    print('1. Sell your loot')
+    print('2. Buy new loot')
+    print('3. Continue on your journey')
+    merchant_choice = input('What would you like to do?')
+    if merchant_choice == '1':
+        
+        print('You have sold your loot for', monster_bag_value, 'gold pieces.')
+        player_gp += monster_bag_value
+        print('You now have', player_gp, 'gold pieces.')
+        print('You have', player_hp, 'hit points.')
+        print('You have', player_xp, 'experience points.')
+        print('You have killed', monster_kills, 'monsters.')
+        print('You have', player_gp, 'gold pieces.')
+        print('You are wearing', player_armor, 'and have', player_armor_points, 'armor points.')
+        print('You are wielding a', player_weapon, 'and have', player_wep_dam, 'weapon damage points.')
+    elif merchant_choice == '2':
+        print('You have bought a new weapon for', player_wep_dam, 'gold pieces.')
+        player_gp -= player_wep_dam
+        print('You now have', player_gp, 'gold pieces.')
+        print('You have', player_hp, 'hit points.')
+        print('You have', player_xp, 'experience points.')
+        print('You have killed', monster_kills, 'monsters.')
+        print('You have', player_gp, 'gold pieces.')
+        print('You are wearing', player_armor, 'and have', player_armor_points, 'armor points.')
+        print('You are wielding a', player_weapon, 'and have', player_wep_dam, 'weapon damage points.')
+    elif merchant_choice == '3':
+        print('You continue on your journey.')
+        print('You have', player_hp, 'hit points.')
+        print('You have', player_xp, 'experience.')
 
 def monster_fight():
+    import os
     global monster
     global monster_hp
     global monster_gp
@@ -318,22 +352,17 @@ def monster_fight():
     global player_armor
     global player_armor_points
     total_damage = player_wep_dam - mon_armor_points
-
+    #FIXME Update Armor Dialogue
     print(f'You encountered a {monster} wielding a {weapon}. It appears to be wearing a {armor}.')
     while monster_hp > 0:
         #monster attack
         if player_armor_points < mon_wep_dam:
             print(f'The {monster} hit you! It dealt {mon_wep_dam} damage. Your {player_armor} reduced the damage by {player_armor_points} points.')
             player_hp -= (mon_wep_dam - player_armor_points)
-            # player hp check
-            if player_hp <= 0:
-                print("You're dead, game over.")
-                break
-            else:
-                print(f"You have {player_hp} HP left.")
+            print(f"You have {player_hp} HP left.")
         else:
             print(f'Your {player_armor} absorbed all the damage!')
-
+#FIXME Should we have the player hp check here
         #player attack
         if player_wep_dam > mon_armor_points:
             print(f'You hit the {monster}! You did {player_wep_dam} damage, but it looks like the {armor} reduced it by {mon_armor_points} points.')
@@ -343,6 +372,10 @@ def monster_fight():
             print("The armor negated the damage....")
             print(f"The {monster} still has {monster_hp} HP left.")
 
+        #player hp check
+        if player_hp <= 0:
+            print("You're dead, game over.")
+            break
         if player_hp > 0:
             if monster_hp <= 0:
                 print('Congratulations, you killed it!')
@@ -352,20 +385,17 @@ def monster_fight():
                 print(f"Of course, it's also carrying its {weapon} and wearing that {armor}.")
                 new_wep = input(f"Do you want to keep the {monster}'s {weapon}, and put your {player_weapon} away?\n")
                 if new_wep == 'Yes':
-                    #FIXME Add player_weapon to player_inv_weps
-                    print(f"Sweet! You've got a nice new {weapon} now. You toss that piece of junk {player_weapon} in your bag. Maybe it'll be worth a few gold.")
                     player_weapon = weapon
+                    print(f"Sweet! You've got a nice new {weapon} now.")
                 elif new_wep == 'No':
                     print(f"You leave the {weapon} where it was.")
                 else:
                     print(f"Invalid command.")
                 new_armor = input(f"Do you want to put on the {monster}'s {armor}?\n")
                 if new_armor == 'Yes':
-                    print(f"You pull your {player_armor} off and store it neatly in your pack.")
-                    #FIXME Add player_armor to player_inv_armor
                     player_armor = armor
                     player_armor_points = mon_armor_points
-                    print(f"You put on the {monster}'s {armor}, which somehow fits you perfectly. This ought to help out.")
+                    print(f"Somehow, the {monster}'s {armor} fits you perfectly. This ought to help some.")
                 elif new_wep == 'No':
                     print(f"Yeah, that makes sense. Peeling a {armor} off a dead guy? Ew.")
                 else:
@@ -379,25 +409,28 @@ def monster_fight():
                 if keepon == 'Run':
                     break
 
+
+
 def goto_dungeon():
+    os.system('cls')
     wp()
     insert_logo()
     dungeon_journey()
-    enter_dungeon = input("Do you wish to enter the Dungeon, " + name +"? (Yes/No)\n")
+    enter_dungeon = input("Do you wish to enter the Dungeon " + name +"? (Yes/No)\n")
     if enter_dungeon == 'Yes' or enter_dungeon == 'yes':
         make_monster()
         make_weapon()
         make_armor()
         make_loot()
         monster_fight()
-    if player_gp >= 500:
+    if player_gp >= 100:
         print("Congratulations! You've earned enough gold to settle down and retire.\nGame over.")
-    elif monster_kills >= 20:
+    elif monster_kills >= 10:
         print("Congratulations! Your efforts have successfully purged evil from this land. You may now rest.\nGame over.")
     elif player_hp <= 0:
         print("You're dead, game over.")
     else:
-        where_to = input(f"Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, Merchant, and Home.\n")
+        where_to = input("Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, Merchant, and Home.\n")
         if where_to == 'Dungeon':
             goto_dungeon()
         if where_to == 'Blacksmith':
@@ -407,8 +440,10 @@ def goto_dungeon():
         if where_to == 'Home':
             goto_home()
         if where_to == 'Merchant':
-            goto_merchant()
+            print('There is nothing here yet....')
+
 def goto_blacksmith():
+    os.system('cls')
     wp()
     insert_logo()
     global player_wep_dam
@@ -425,7 +460,7 @@ def goto_blacksmith():
             player_wep_dam += 1
             player_weapon += '+'
             print(f'{player_weapon} {player_wep_dam}')
-    where_to = input(f"Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, Merchant, and Home.\n")
+    where_to = input("Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, and Home.\n")
     if where_to == 'Dungeon':
         goto_dungeon()
     if where_to == 'Blacksmith':
@@ -434,16 +469,15 @@ def goto_blacksmith():
         goto_temple()
     if where_to == 'Home':
         goto_home()
-    if where_to == 'Merchant':
-        goto_merchant()
 
 def goto_temple():
+    os.system('cls')
     wp()
     insert_logo()
     global player_xp
     global total_player_hp
     global player_hp
-    #need to remove the function 'global name' and then add it back.2
+    #need to remove the function 'gloabal name' and then add it back.2
 
     print("The Temple stands before you, ancient and imposing. A Temple Maiden Greets you.")
     #add name into the Good Day (name) part
@@ -457,7 +491,7 @@ def goto_temple():
         if player_xp < 10:
             print(f"The Temple Maiden shakes her head sadly.")
             print(f"My dear {name}, I am sorry. You must complete more trials before I can help you.")
-    where_to = input(f"Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, Merchant, and Home.\n")
+    where_to = input("Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, and Home.\n")
     if where_to == 'Dungeon':
         goto_dungeon()
     if where_to == 'Blacksmith':
@@ -466,61 +500,18 @@ def goto_temple():
         goto_temple()
     if where_to == 'Home':
         goto_home()
-    if where_to == 'Merchant':
-        goto_merchant()
-
-def goto_merchant():
-    print(f"Store's closed.")
-    where_to = input(f"Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, Merchant, and Home.\n")
-    if where_to == 'Dungeon':
-        goto_dungeon()
-    if where_to == 'Blacksmith':
-        goto_blacksmith()
-    if where_to == 'Temple':
-        goto_temple()
-    if where_to == 'Home':
-        goto_home()
-    if where_to == 'Merchant':
-        goto_merchant()
-
 
 def goto_home():
+    os.system('cls')
     wp()
     insert_logo()
     global player_hp
-    print(f"Welcome home, {name}. Do you need to Store items? Or perhaps Retrieve something? Would you like to Rest and recover HP? Or do you want to just stay inside? If not, you can Leave.")
-    home_options = input("Store, Retrieve, Rest, Quit, or Leave?\n")
-
-    if home_options == "Store":
-        print(f"What items would you like to store in your vault?")
-        #FIXME list player inventory
-        #remove items from player inventory
-        #add items to home inventory
-        print(f"What would you like to do now? Do you wish to rest? Do you need to get anything out of storage? Would you like to stay inside forever? Or do you have business elsewhere?")
-        home_options = input("Rest, Retrieve, Quit, or Leave?\n")
-
-    if home_options == 'Retrieve':
-        print(f"What items would you like to store in your vault?")
-        # FIXME list home inventory
-        # remove items from home inventory
-        # add items to player inventory
-        print(f"What would you like to do now? Do you need to store any items? Do you wish to rest? Would you like to stay inside forever? Or do you have business elsewhere?")
-        home_options = input("Store, Rest, Quit, or Leave?\n")
-
+    print(f"Welcome home, {name}. Would you like to Rest and recover HP? Or do you want to just stay inside?")
+    home_options = input("Rest or Quit?\n")
     if home_options == 'Rest':
         player_hp = total_player_hp
         print(f"You feel rejuvenated. Your HP is now at {player_hp}.")
-        print(f"What would you like to do now? Do you need to Store or Retrieve some items? Or would you like to stay inside forever? Or are you finished at home?")
-        home_options = input("Store, Retrieve, Quit, or Leave?\n")
-
-    if home_options == 'Quit':
-        print(f'Very well. You sit in your rocking chair and watch as darkness swallows the land.')
-        print(f'With your last breath, you know in your heart you could have stopped it, but chose to stay home.')
-        print(f'Game Over.')
-        player_hp = -10
-
-    if home_options == 'Leave':
-        where_to = input(f"Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, Merchant, and Home.\n")
+        where_to = input("Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, and Home.\n")
         if where_to == 'Dungeon':
             goto_dungeon()
         if where_to == 'Blacksmith':
@@ -529,11 +520,16 @@ def goto_home():
             goto_temple()
         if where_to == 'Home':
             goto_home()
-        if where_to == 'Merchant':
-            goto_merchant()
+    if home_options == 'Quit':
+        print(f'Very well. You sit in your rocking chair and watch as darkness swallows the land.')
+        print(f'With your last breath, you know in your heart you could have stopped it, but chose to stay home.')
+        print(f'Game Over.')
+        player_hp = -10
 
 
 underline = '\33[4m'
+
+
 
 
 # At character creation, each class receives a bonus to a certain game stat, based on the class chosen.
@@ -595,9 +591,6 @@ def elf():
     wep_dam_mult = 1
     time.sleep(2)
 
-
-
-
 def dragonskin():
     wp()
     insert_logo()
@@ -613,10 +606,6 @@ def dragonskin():
     total_player_hp = 40
     wep_dam_mult = 1
     time.sleep(2)
-
-
-
-
 
 def goliath():
     wp()
@@ -634,10 +623,6 @@ def goliath():
     wep_dam_mult = 2
     time.sleep(2)
 
-
-
-
-
 def human():
     wp()
     insert_logo()
@@ -653,9 +638,6 @@ def human():
     wep_dam_mult = 1.2
     print("As a Human you now have a 20% BUFF in HP, GP, and XP")
     time.sleep(2)
-
-
-
 
 def character_selection():
     print("You now have the choice to choose your class.")
@@ -685,11 +667,9 @@ def character_selection():
     elif sel == '5':
         human()
 #fix underline in character selection
-#NEED TO DO - Add Name functions
+#NEED TO DO - Add Name fucntionS
 
 ################################################################################
-
-
 
 #--------------------GAME START----------------------#
 
