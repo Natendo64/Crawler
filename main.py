@@ -301,7 +301,7 @@ player_armor_points = 0
 
 ##########################################################################
 
-def merchant():
+def goto_merchant():
     print('You have come across a merchant. What would you like to do?')
     print('1. Sell your loot')
     print('2. Buy new loot')
@@ -687,8 +687,7 @@ lore()
 
 while player_hp <= 0:
     break
-
-where_to = input("Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, and Home.\n")
+where_to = input("Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, Merchant, and Home.\n")
 if where_to == 'Dungeon':
     goto_dungeon()
 if where_to == 'Blacksmith':
