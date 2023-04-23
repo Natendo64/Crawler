@@ -58,7 +58,6 @@ def dungeon_journey():
     print('\x1B[3m Go forth and claim the spark that will become the weapon against those from the abyss.\x1B[0m')
 
 
-
 # the intro to the first enemy encounter in the dungeon
 
 def intro_fight():
@@ -108,6 +107,7 @@ treasure_valure = 0
 monster_gp_mult = 1
 monster_xp_mult = 1
 wep_dam_mult = 1
+monster_bag_value = 0
 
 
 def troll_c():
@@ -301,37 +301,8 @@ player_armor_points = 0
 
 ##########################################################################
 
-def goto_merchant():
-    print('You have come across a merchant. What would you like to do?')
-    print('1. Sell your loot')
-    print('2. Buy new loot')
-    print('3. Continue on your journey')
-    merchant_choice = input('What would you like to do?')
-    if merchant_choice == '1':
-        
-        print('You have sold your loot for', monster_bag_value, 'gold pieces.')
-        player_gp += monster_bag_value
-        print('You now have', player_gp, 'gold pieces.')
-        print('You have', player_hp, 'hit points.')
-        print('You have', player_xp, 'experience points.')
-        print('You have killed', monster_kills, 'monsters.')
-        print('You have', player_gp, 'gold pieces.')
-        print('You are wearing', player_armor, 'and have', player_armor_points, 'armor points.')
-        print('You are wielding a', player_weapon, 'and have', player_wep_dam, 'weapon damage points.')
-    elif merchant_choice == '2':
-        print('You have bought a new weapon for', player_wep_dam, 'gold pieces.')
-        player_gp -= player_wep_dam
-        print('You now have', player_gp, 'gold pieces.')
-        print('You have', player_hp, 'hit points.')
-        print('You have', player_xp, 'experience points.')
-        print('You have killed', monster_kills, 'monsters.')
-        print('You have', player_gp, 'gold pieces.')
-        print('You are wearing', player_armor, 'and have', player_armor_points, 'armor points.')
-        print('You are wielding a', player_weapon, 'and have', player_wep_dam, 'weapon damage points.')
-    elif merchant_choice == '3':
-        print('You continue on your journey.')
-        print('You have', player_hp, 'hit points.')
-        print('You have', player_xp, 'experience.')
+
+
 
 def monster_fight():
     import os
@@ -351,6 +322,7 @@ def monster_fight():
     global mon_armor_points
     global player_armor
     global player_armor_points
+    global monster_bag_value
     total_damage = player_wep_dam - mon_armor_points
     #FIXME Update Armor Dialogue
     print(f'You encountered a {monster} wielding a {weapon}. It appears to be wearing a {armor}.')
@@ -440,7 +412,65 @@ def goto_dungeon():
         if where_to == 'Home':
             goto_home()
         if where_to == 'Merchant':
-            print('There is nothing here yet....')
+            goto_merchant()
+
+
+
+
+def goto_merchant():
+    os.system('cls')
+    wp()
+    insert_logo()
+    enter_merchant = input("Do you wish to enter the Merchant? (Yes/No)\n")
+    global monster_bag_value
+    global player_gp
+    global player_xp
+    global monster_kills
+    global player_armor
+    global player_armor_points
+    global player_weapon
+    global player_armor_points
+    if enter_merchant.lower() == 'yes':
+        print('You have come across a merchant. What would you like to do?')
+        print('1. Sell your loot')
+        print('2. Buy new loot')
+        print('3. Continue on your journey')
+        merchant_choice = input()
+        if merchant_choice == '1':
+            print('You have sold your loot for', monster_bag_value, 'gold pieces.')
+            player_gp += monster_bag_value
+            print('You now have', player_gp, 'gold pieces.')
+            print('You have', player_hp, 'hit points.')
+            print('You have', player_xp, 'experience points.')
+            print('You have killed', monster_kills, 'monsters.')
+            print('You have', player_gp, 'gold pieces.')
+            print('You are wearing', player_armor, 'and have', player_armor_points, 'armor points.')
+            print('You are wielding a', player_weapon, 'and have', player_wep_dam, 'weapon damage points.')
+        elif merchant_choice == '2':
+            print('You have bought a new weapon for', player_wep_dam, 'gold pieces.')
+            player_gp -= player_wep_dam
+            print('You now have', player_gp, 'gold pieces.')
+            print('You have', player_hp, 'hit points.')
+            print('You have', player_xp, 'experience points.')
+            print('You have killed', monster_kills, 'monsters.')
+            print('You have', player_gp, 'gold pieces.')
+            print('You are wearing', player_armor, 'and have', player_armor_points, 'armor points.')
+            print('You are wielding a', player_weapon, 'and have', player_wep_dam, 'weapon damage points.')
+        elif merchant_choice == '3':
+            print('You continue on your journey., \n')
+            print('You have', player_hp, 'hit points.')
+            print('You have', player_xp, 'experience.')
+    where_to = input("Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, and Home.\n")
+    if where_to == 'Dungeon':
+        goto_dungeon()
+    if where_to == 'Blacksmith':
+        goto_blacksmith()
+    if where_to == 'Temple':
+        goto_temple()
+    if where_to == 'Merchant':
+        goto_merchant()
+    if where_to == 'Home':
+        goto_home()
 
 def goto_blacksmith():
     os.system('cls')
@@ -696,3 +726,5 @@ if where_to == 'Temple':
     goto_temple()
 if where_to == 'Home':
     goto_home()
+if where_to == 'Merchant':
+    goto_merchant()
