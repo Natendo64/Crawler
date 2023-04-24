@@ -324,17 +324,23 @@ def monster_fight():
     global player_armor_points
     global monster_bag_value
     total_damage = player_wep_dam - mon_armor_points
-    #FIXME Update Armor Dialogue
+
     print(f'You encountered a {monster} wielding a {weapon}. It appears to be wearing a {armor}.')
     while monster_hp > 0:
-        #monster attack
+        # monster attack
         if player_armor_points < mon_wep_dam:
-            print(f'The {monster} hit you! It dealt {mon_wep_dam} damage. Your {player_armor} reduced the damage by {player_armor_points} points.')
+            print(
+                f'The {monster} hit you! It dealt {mon_wep_dam} damage. Your {player_armor} reduced the damage by {player_armor_points} points.')
             player_hp -= (mon_wep_dam - player_armor_points)
-            print(f"You have {player_hp} HP left.")
+            # player hp check
+            if player_hp <= 0:
+                print("You're dead, game over.")
+                break
+            else:
+                print(f"You have {player_hp} HP left.")
         else:
             print(f'Your {player_armor} absorbed all the damage!')
-#FIXME Should we have the player hp check here
+
         #player attack
         if player_wep_dam > mon_armor_points:
             print(f'You hit the {monster}! You did {player_wep_dam} damage, but it looks like the {armor} reduced it by {mon_armor_points} points.')
@@ -344,10 +350,6 @@ def monster_fight():
             print("The armor negated the damage....")
             print(f"The {monster} still has {monster_hp} HP left.")
 
-        #player hp check
-        if player_hp <= 0:
-            print("You're dead, game over.")
-            break
         if player_hp > 0:
             if monster_hp <= 0:
                 print('Congratulations, you killed it!')
@@ -357,19 +359,32 @@ def monster_fight():
                 print(f"Of course, it's also carrying its {weapon} and wearing that {armor}.")
                 new_wep = input(f"Do you want to keep the {monster}'s {weapon}, and put your {player_weapon} away?\n")
                 if new_wep == 'Yes':
+                    #FIXME Add player_weapon to player_inv_weps
+                    print(f"Sweet! You've got a nice new {weapon} now. You toss that piece of junk {player_weapon} in your bag. Maybe it'll be worth a few gold.")
                     player_weapon = weapon
-                    print(f"Sweet! You've got a nice new {weapon} now.")
                 elif new_wep == 'No':
-                    print(f"You leave the {weapon} where it was.")
+                    keep_wep = input(f"Do you want to hang on to the {weapon}? It might be worth something.")
+                    if keep_wep == 'Yes':
+                        #FIXME Add weapon to player_inv_weps
+                        print(f"You stick the {weapon} in your bag. Maybe it'll be worth something.")
+                    elif keep_wep == 'No':
+                        print(f"You're right, it's not worth the trouble. You chuck the {weapon} into the corner of the dungeon and forget about it.")
                 else:
                     print(f"Invalid command.")
                 new_armor = input(f"Do you want to put on the {monster}'s {armor}?\n")
                 if new_armor == 'Yes':
+                    print(f"You pull your {player_armor} off and store it neatly in your pack.")
+                    #FIXME Add player_armor to player_inv_armor
                     player_armor = armor
                     player_armor_points = mon_armor_points
-                    print(f"Somehow, the {monster}'s {armor} fits you perfectly. This ought to help some.")
-                elif new_wep == 'No':
-                    print(f"Yeah, that makes sense. Peeling a {armor} off a dead guy? Ew.")
+                    print(f"You put on the {monster}'s {armor}, which somehow fits you perfectly. This ought to help out.")
+                elif new_armor == 'No':
+                    keep_armor = input(f"Do you want to save the {armor} for a rainy day? Maybe you can sell it?")
+                    if keep_armor == 'Yes':
+                        #FIXME Add armor to player_inv_armor
+                        print(f"Smart. You stick the {armor} into your bag.")
+                    elif keep_armor == 'No':
+                        print(f"Yeah, that makes sense. Peeling a {armor} off a dead guy? Ew.")
                 else:
                     print(f"Invalid command.")
                 player_gp += monster_gp
@@ -380,8 +395,6 @@ def monster_fight():
                     print('Your only options are to Attack or Run. You must choose one.')
                 if keepon == 'Run':
                     break
-
-
 
 def goto_dungeon():
     os.system('cls')
@@ -413,9 +426,6 @@ def goto_dungeon():
             goto_home()
         if where_to == 'Merchant':
             goto_merchant()
-
-
-
 
 def goto_merchant():
     os.system('cls')
@@ -536,12 +546,39 @@ def goto_home():
     wp()
     insert_logo()
     global player_hp
-    print(f"Welcome home, {name}. Would you like to Rest and recover HP? Or do you want to just stay inside?")
-    home_options = input("Rest or Quit?\n")
+    print(f"Welcome home, {name}. Do you need to Store items? Or perhaps Retrieve something? Would you like to Rest and recover HP? Or do you want to just stay inside? If not, you can Leave.")
+    home_options = input("Store, Retrieve, Rest, Quit, or Leave?\n")
+
+    if home_options == "Store":
+        print(f"What items would you like to store in your vault?")
+        #FIXME list player inventory
+        #remove items from player inventory
+        #add items to home inventory
+        print(f"What would you like to do now? Do you wish to rest? Do you need to get anything out of storage? Would you like to stay inside forever? Or do you have business elsewhere?")
+        home_options = input("Rest, Retrieve, Quit, or Leave?\n")
+
+    if home_options == 'Retrieve':
+        print(f"What items would you like to store in your vault?")
+        # FIXME list home inventory
+        # remove items from home inventory
+        # add items to player inventory
+        print(f"What would you like to do now? Do you need to store any items? Do you wish to rest? Would you like to stay inside forever? Or do you have business elsewhere?")
+        home_options = input("Store, Rest, Quit, or Leave?\n")
+
     if home_options == 'Rest':
         player_hp = total_player_hp
         print(f"You feel rejuvenated. Your HP is now at {player_hp}.")
-        where_to = input("Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, and Home.\n")
+        print(f"What would you like to do now? Do you need to Store or Retrieve some items? Or would you like to stay inside forever? Or are you finished at home?")
+        home_options = input("Store, Retrieve, Quit, or Leave?\n")
+
+    if home_options == 'Quit':
+        print(f'Very well. You sit in your rocking chair and watch as darkness swallows the land.')
+        print(f'With your last breath, you know in your heart you could have stopped it, but chose to stay home.')
+        print(f'Game Over.')
+        player_hp = -10
+
+    if home_options == 'Leave':
+        where_to = input(f"Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, Merchant, and Home.\n")
         if where_to == 'Dungeon':
             goto_dungeon()
         if where_to == 'Blacksmith':
@@ -550,11 +587,9 @@ def goto_home():
             goto_temple()
         if where_to == 'Home':
             goto_home()
-    if home_options == 'Quit':
-        print(f'Very well. You sit in your rocking chair and watch as darkness swallows the land.')
-        print(f'With your last breath, you know in your heart you could have stopped it, but chose to stay home.')
-        print(f'Game Over.')
-        player_hp = -10
+        if where_to == 'Merchant':
+            goto_merchant()
+
 
 
 underline = '\33[4m'
