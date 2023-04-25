@@ -858,23 +858,42 @@ def goto_home():
     print(f"Or do you want to just stay inside? If not, you can Leave.")
     home_options = input("Store, Retrieve, Rest, Quit, or Leave?\n")
 
+    def goto_home():
+    os.system('cls')
+    wp()
+    insert_logo()
+    global player_hp
+    print(f"Welcome home, {name}. Do you need to Store items? Or perhaps Retrieve something? Would you like to Rest and recover HP?")
+    print(f"Or do you want to just stay inside? If not, you can Leave.")
+    home_options = input("Store, Retrieve, Rest, Quit, or Leave?\n")
+
     if home_options == "Store":
-        print(f"What items would you like to store in your vault?")
+        item_to_store = print(f"What items would you like to store in your vault?")
         #FIXME list player inventory
+        list_inventory(player_inv)
+
         #remove items from player inventory
         #add items to home inventory
+        remove_from_inventory(player_inv, item_to_store)
+        add_to_inventory(home_inv, item_to_store)
         print(f"What would you like to do now? Do you wish to rest? Do you need to get anything out of storage? Would you like to stay inside")
         print(f"forever? Or do you have business elsewhere?")
         home_options = input("Rest, Retrieve, Quit, or Leave?\n")
 
     if home_options == 'Retrieve':
-        print(f"What items would you like to retrieve in your vault?")
-        # FIXME list home inventory
-        # remove items from home inventory
+        home_inv = Inventory()
+        print(f"What items would you like to store in your vault?")
+        print("Inventory():")
+        list_inventory(home_inv)
+        remove_from_inventory(home_inv, )
+        add_to_inventory(player_inv, )
+            #FIXME list home inventory
+            #remove items from home inventory
         # add items to player inventory
         print(f"What would you like to do now? Do you need to store any items? Do you wish to rest? Would you like to stay inside forever?")
         print(f"Or do you have business elsewhere?")
         home_options = input("Store, Rest, Quit, or Leave?\n")
+
 
     if home_options == 'Rest':
         player_hp = total_player_hp
