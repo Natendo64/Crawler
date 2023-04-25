@@ -712,9 +712,9 @@ def goto_dungeon():
     enter_dungeon = input("Do you wish to enter the Dungeon " + name +"? (Yes/No)\n")
     if enter_dungeon == 'Yes' or enter_dungeon == 'yes':
         make_monster()
-        make_armor()
-        make_weapon()
-        make_loot()
+        AllArmor()
+        AllWeapon()
+        DropLoot()
         monster_fight()
     if player_gp >= 100:
         print("Congratulations! You've earned enough gold to settle down and retire.\nGame over.")
