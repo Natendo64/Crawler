@@ -476,106 +476,106 @@ def make_monster():
     monster_xp = monster_hp * 2
 
 #Monster Armor Generator
-def make_armor():
-    ran_mon_armor_mat = random.choice(armor_mat)
-    ran_mon_armor_type = random.choice(armor_type)
-    global armor
-    armor = ran_mon_armor_mat + ' ' + ran_mon_armor_type
-    global mon_armor_points
-    mon_armor_points = ((int(armor_mat.index(ran_mon_armor_mat)) + int(armor_type.index(ran_mon_armor_type)) + 2) / 2)
-    global mon_armor_worth
-    mon_armor_worth = int(mon_armor_points * 2)
-    global armor_node
-    armor_node = Node({armor})
+# def make_armor():
+#     ran_mon_armor_mat = random.choice(armor_mat)
+#     ran_mon_armor_type = random.choice(armor_type)
+#     global armor
+#     armor = ran_mon_armor_mat + ' ' + ran_mon_armor_type
+#     global mon_armor_points
+#     mon_armor_points = ((int(armor_mat.index(ran_mon_armor_mat)) + int(armor_type.index(ran_mon_armor_type)) + 2) / 2)
+#     global mon_armor_worth
+#     mon_armor_worth = int(mon_armor_points * 2)
+#     global armor_node
+#     armor_node = Node({armor})
 
-# class AllArmor:
-#     def __init__(self):
-#         self.armor_name = str(armor_mat) + ' ' + str(armor_type)
-#         self.ran_mon_armor_mat = random.choice(armor_mat)
-#         self.ran_mon_armor_type = random.choice(armor_type)
-#         self.armor_points = (
-#                 int(armor_mat.index(self.ran_mon_armor_mat)) + int(armor_type.index(self.ran_mon_armor_type)) + 2 / 2)
-#         self.mon_armor_worth = int(self.armor_points * 2)
-#
-#     def __str__(self):  # description
-#         return str(self.armor_name) + ": Worth" + str(self.mon_armor_worth) + "Gold, and has" + str(
-#             self.armor_points) + "armor points."
+class AllArmor:
+    def __init__(self):
+        self.armor_name = str(armor_mat) + ' ' + str(armor_type)
+        self.ran_mon_armor_mat = random.choice(armor_mat)
+        self.ran_mon_armor_type = random.choice(armor_type)
+        self.armor_points = (
+                int(armor_mat.index(self.ran_mon_armor_mat)) + int(armor_type.index(self.ran_mon_armor_type)) + 2 / 2)
+        self.mon_armor_worth = int(self.armor_points * 2)
+
+    def __str__(self):  # description
+        return str(self.armor_name) + ": Worth" + str(self.mon_armor_worth) + "Gold, and has" + str(
+            self.armor_points) + "armor points."
 
 
-# class ArmorNode(make_armor()):
-#     def __init__(self):
-#         super(ArmorNode, self)
-#         super().__init__()
-#         self.data = self.armor_name
-#         self.prev = None
-#         self.next = None
+class ArmorNode(AllArmor):
+    def __init__(self):
+        super(ArmorNode, self)
+        super().__init__()
+        self.data = self.armor_name
+        self.prev = None
+        self.next = None
 
 #Monster Weapon Generator
-def make_weapon():
-    ran_mon_wep_mat = random.choice(weapon_mat)
-    ran_mon_wep_type = random.choice(weapon_type)
-    global weapon
-    weapon = ran_mon_wep_mat + ' ' + ran_mon_wep_type
-    global mon_wep_dam
-    mon_wep_dam = int(weapon_mat.index(ran_mon_wep_mat)) + int(weapon_type.index(ran_mon_wep_type)) + 2
-    global weapon_node
+# def make_weapon():
+#     ran_mon_wep_mat = random.choice(weapon_mat)
+#     ran_mon_wep_type = random.choice(weapon_type)
+#     global weapon
+#     weapon = ran_mon_wep_mat + ' ' + ran_mon_wep_type
+#     global mon_wep_dam
+#     mon_wep_dam = int(weapon_mat.index(ran_mon_wep_mat)) + int(weapon_type.index(ran_mon_wep_type)) + 2
+#     global weapon_node
 
-# class AllWeapon:
-#     def __init__(self):
-#         self.weapon = str(weapon_mat) + ' ' + str(weapon_type)
-#         self.ran_mon_wep_mat = random.choice(weapon_mat)
-#         self.ran_mon_wep_type = random.choice(weapon_type)
-#         self.mon_wep_dam = (
-#                 (int(weapon_mat.index(self.ran_mon_wep_mat))) + (int(weapon_type.index(self.ran_mon_wep_type))) + 2)
-#         self.weap_value = int(self.mon_wep_dam / 2)
-#
-#     def __str__(self):  # description
-#         return str(self.weapon) + ": Worth" + str(self.weap_value) + "Gold, and does" + str(
-#             self.mon_wep_dam) + " damage."
+class AllWeapon:
+    def __init__(self):
+        self.weapon = str(weapon_mat) + ' ' + str(weapon_type)
+        self.ran_mon_wep_mat = random.choice(weapon_mat)
+        self.ran_mon_wep_type = random.choice(weapon_type)
+        self.mon_wep_dam = (
+                (int(weapon_mat.index(self.ran_mon_wep_mat))) + (int(weapon_type.index(self.ran_mon_wep_type))) + 2)
+        self.weap_value = int(self.mon_wep_dam / 2)
 
-# class WeaponNode(make_weapon()):
-#     def __init__(self):
-#         super(WeaponNode, self)
-#         super().__init__()
-#         self.data = self.weapon
-#         self.prev = None
-#         self.next = None
+    def __str__(self):  # description
+        return str(self.weapon) + ": Worth" + str(self.weap_value) + "Gold, and does" + str(
+            self.mon_wep_dam) + " damage."
+
+class WeaponNode(AllWeapon):
+    def __init__(self):
+        super(WeaponNode, self)
+        super().__init__()
+        self.data = self.weapon
+        self.prev = None
+        self.next = None
 
 #Monster Loot Generator
-def make_loot():
-    ran_junk1 = random.choice(junk_loot)
-    junk1_value = 1
-    ran_junk2 = random.choice(junk_loot)
-    junk2_value = 1
-    ran_treasure = random.choice(treasure_loot)
-    treasure_value = int(treasure_loot.index(ran_treasure))*10
-    global monster_bag
-    monster_bag = ran_junk1 + ', ' + ran_junk2 + ', ' + ran_treasure
-    global monster_bag_value
-    monster_bag_value = int(junk1_value + junk2_value + treasure_value)
+# def make_loot():
+#     ran_junk1 = random.choice(junk_loot)
+#     junk1_value = 1
+#     ran_junk2 = random.choice(junk_loot)
+#     junk2_value = 1
+#     ran_treasure = random.choice(treasure_loot)
+#     treasure_value = int(treasure_loot.index(ran_treasure))*10
+#     global monster_bag
+#     monster_bag = ran_junk1 + ', ' + ran_junk2 + ', ' + ran_treasure
+#     global monster_bag_value
+#     monster_bag_value = int(junk1_value + junk2_value + treasure_value)
 
-# class DropLoot:
-#     def __init__(self):
-#         self.monster_bag = ran_junk1 + ', ' + ran_junk2 + ', ' + ran_treasure
-#         self.ran_junk1 = random.choice(junk_loot)
-#         self.junk1_value = 1
-#         self.ran_junk2 = random.choice(junk_loot)
-#         self.junk2_value = 1
-#         self.ran_treasure = random.choice(treasure_loot)
-#         self.treasure_value = int(treasure_loot.index(ran_treasure))*10
-#         self.monster_bag_value = int(junk1_value + junk2_value + treasure_value)
-#
-#     def __str__(self):  # description
-#         return (str(self.monster_bag) + "'s loot") + ": Worth" + str(self.monster_bag_value) + "gold, contains" + str(
-#             self.ran_junk1) + ", " + str(self.ran_junk2) + ", and" + (str(self.ran_treasure) + ".")
+class DropLoot:
+    def __init__(self):
+        self.monster_bag = ran_junk1 + ', ' + ran_junk2 + ', ' + ran_treasure
+        self.ran_junk1 = random.choice(junk_loot)
+        self.junk1_value = 1
+        self.ran_junk2 = random.choice(junk_loot)
+        self.junk2_value = 1
+        self.ran_treasure = random.choice(treasure_loot)
+        self.treasure_value = int(treasure_loot.index(ran_treasure))*10
+        self.monster_bag_value = int(junk1_value + junk2_value + treasure_value)
 
-# class DropLootNode(make_loot()):
-#     def __init__(self):
-#         super(DropLootNode, self)
-#         super().__init__()
-#         self.data = self.monster_bag
-#         self.prev = None
-#         self.next = None
+    def __str__(self):  # description
+        return (str(self.monster_bag) + "'s loot") + ": Worth" + str(self.monster_bag_value) + "gold, contains" + str(
+            self.ran_junk1) + ", " + str(self.ran_junk2) + ", and" + (str(self.ran_treasure) + ".")
+
+class DropLootNode(DropLoot):
+    def __init__(self):
+        super(DropLootNode, self)
+        super().__init__()
+        self.data = self.monster_bag
+        self.prev = None
+        self.next = None
 
 #---------------------------------------------------------------------
 
