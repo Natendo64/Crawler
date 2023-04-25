@@ -351,10 +351,6 @@ class Inventory():
 
             current_loot = next_loot
 
-player_inv = Inventory()
-merchant_inv = Inventory()
-home_inv  = Inventory()
-
 def troll_c():
     print("  ⋌⁻⁻⋋.-⁻⁻⁻⁻⁻-.⋌⁻⁻⋋  ")
     print("  \ ./       \. /  ")
@@ -654,8 +650,8 @@ def monster_fight():
                 new_wep = input(f"Do you want to use the {monster}'s {weapon}, and put your {player_weapon} away?\n")
                 if new_wep == 'Yes':
                     #FIXME Add player_weapon to player_inv_weps
-                    temp_wep = Inventory()
-                    temp_wep.append_to_inventory_weapons({player_weapon})
+                    player_inv = Inventory()
+                    player_inv.append_to_inventory_weapons({player_weapon})
                     print(f"Sweet! You've got a nice new {weapon} now. You toss that piece of junk {player_weapon} in your bag.")
                     print(f"Maybe it'll be worth a few gold.")
                     player_weapon = weapon
@@ -663,8 +659,8 @@ def monster_fight():
                     keep_wep = input(f"Do you want to hang on to the {weapon}? It might be worth something.")
                     if keep_wep == 'Yes':
                         #FIXME Add weapon to player_inv_weps
-                        temp = Inventory()
-                        temp.prepend_to_inventory_weapons({weapon})
+                        player_inv = Inventory()
+                        player_inv.append_to_inventory_weapons({weapon})
                         print(f"You stick the {weapon} in your bag. Maybe it'll be worth something.")
                     elif keep_wep == 'No':
                         print(f"You're right, it's not worth the trouble. You chuck the {weapon} into the corner of the dungeon and")
@@ -675,8 +671,8 @@ def monster_fight():
                 if new_armor == 'Yes':
                     print(f"You pull your {player_armor} off and store it neatly in your pack.")
                     #FIXME Add player_armor to player_inv_armor
-                    temp_armor = Inventory()
-                    temp_armor.prepend_to_inventory_armor({player_armor})
+                    player_inv = Inventory()
+                    player_inv.prepend_to_inventory_armor({player_armor})
                     player_armor = armor
                     player_armor_points = mon_armor_points
                     print(f"You put on the {monster}'s {armor}, which somehow fits you perfectly. This ought to help out.")
@@ -692,10 +688,10 @@ def monster_fight():
                 else:
                     print(f"Invalid command.")
                 player_gp += monster_gp
-                temp_loot = Inventory()
-                temp_loot.append_to_inventory_loot({ran_junk1})
-                temp_loot.append_to_inventory_loot({ran_junk2})
-                temp_loot.append_to_inventory_loot({ran_treasure})
+                player_inv = Inventory()
+                player_inv.append_to_inventory_loot({ran_junk1})
+                player_inv.append_to_inventory_loot({ran_junk2})
+                player_inv.append_to_inventory_loot({ran_treasure})
                 print(f'Player GP: {player_gp}, Player XP: {player_xp}, Monsters Killed: {monster_kills}')
             if monster_hp > 0:
                 keepon = input('What do you want to do? Attack or Run?\n')
@@ -709,7 +705,7 @@ def goto_dungeon():
     wp()
     insert_logo()
     dungeon_journey()
-    enter_dungeon = input("Do you wish to enter the Dungeon " + name +"? (Yes/No)\n")
+    enter_dungeon = input("Do you wish to enter the Dungeon, " + name +"? (Yes/No)\n")
     if enter_dungeon == 'Yes' or enter_dungeon == 'yes':
         make_monster()
         AllArmor()
@@ -872,7 +868,7 @@ def goto_home():
         home_options = input("Rest, Retrieve, Quit, or Leave?\n")
 
     if home_options == 'Retrieve':
-        print(f"What items would you like to store in your vault?")
+        print(f"What items would you like to retrieve in your vault?")
         # FIXME list home inventory
         # remove items from home inventory
         # add items to player inventory
