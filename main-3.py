@@ -5,7 +5,6 @@ from storyline import *
 from logo_d import *
 from wpog import *
 
-
 insert_logo()
 name = input("Before we go on our quest what shall I call you?\n")
 
@@ -21,6 +20,7 @@ def title():
     print()
 
 # intro credits
+
 
 def lore():
     wp()
@@ -41,18 +41,22 @@ def lore():
 
 # character creation
 
+
 def hero_mission():
     print('\x1B[3m At the grand temple of Lewrac an oracle from the gods declare that a new hero has been chosen.\x1B[0m')
     print('\x1B[3m This hero will have to journey to the great dungeon and fight against the creatures of the abyss.\x1B[0m')
     print('\x1B[3m They have received the blessings of the gods and will become the champion of in the realm.\x1B[0m')
 
+
 # travel to dungeon
+
 
 def dungeon_journey():
     print('\x1B[3m The sun has lead you to cross the Aleshian Mountains and the moon guided you through the Forest of Morveir.\x1B[0m')
     print('\x1B[3m You have arrived at the entrance of the Dungeon of the Origin Flame.\x1B[0m')
     print('\x1B[3m The blessings of the gods rest upon you young hero.\x1B[0m')
     print('\x1B[3m Go forth and claim the spark that will become the weapon against those from the abyss.\x1B[0m')
+
 
 # the intro to the first enemy encounter in the dungeon
 
@@ -65,10 +69,12 @@ def intro_fight():
 
 # when they return to the dungeon from town, temple, etc.
 
+
 def dungeon_return():
     print('\x1B[3m Your battle against the forces of darkness and chaos has not ended yet.\x1B[0m')
     print('\x1B[3m Calm your heart and fulfil your destiny.\x1B[0m')
     print('\x1B[3m Are you ready to continue your conquest of the dungeon?: Yes or No?\x1B[0m')
+
 
 def hero_win_spark():
     print('\x1B[3m With the defeat of the dungeon enemies you have obtained the power of the Origin Flame.\x1B[0m')
@@ -97,284 +103,45 @@ ran_junk2 = ''
 ran_treasure = ''
 junk1_value = 0
 junk2_value = 0
-treasure_value = 0
+treasure_valure = 0
 monster_gp_mult = 1
 monster_xp_mult = 1
 wep_dam_mult = 1
 monster_bag_value = 0
 
-# inventory
-inventory_weapons = []
-inventory_armor = []
-inventory_loot = []
-
-class Node:
-    def __init__(self, initial_data=None):
-        self.data = initial_data
-        self.next = None
-        self.prev = None
-
-class Inventory():
-    def __init__(self):
-        self.head_weapons = inventory_weapons
-        self.head_armor = inventory_armor
-        self.head_loot = inventory_loot
-        self.tail_weapons = inventory_weapons
-        self.tail_armor = inventory_armor
-        self.tail_loot = inventory_loot
-
-        self.prev_weapons = None
-        self.prev_armor = None
-        self.prev_loot = None
-        self.next_weapons = None
-        self.next_armor = None
-        self.next_loot = None
-        self.new_weapons = None
-        self.new_armor = None
-        self.new_loot = None
-        self.current_weapons = None
-        self.current_armor = None
-        self.current_loot = None
-
-    new_weapons = Node({weapon})
-    current_weapons = Node({weapon})
-    head_weapons = Node({weapon})
-    tail_weapons = Node({weapon})
-
-    # weapons inventory
-    def append_to_inventory_weapons(self, new_weapons):
-        if self.head_weapons is None:
-            self.head_weapons = new_weapons
-            self.tail_weapons = new_weapons
-        else:
-            self.tail_weapons.next = new_weapons
-            new_weapons.prev = self.tail_weapons
-            self.tail_weapons = new_weapons
-
-    def prepend_to_inventory_weapons(self, new_weapons):
-        if self.head_weapons is None:
-            self.head_weapons = new_weapons
-            self.tail_weapons = new_weapons
-        else:
-            new_weapons.next = self.head_weapons
-            self.head_weapons.prev = new_weapons
-            self.head_weapons = new_weapons
-
-    def insert_after_in_inventory_weapons(self, current_weapons, new_weapons):
-        if self.head_weapons is None:
-            self.head_weapons = new_weapons
-            self.tail_weapons = new_weapons
-        else:
-            successor_node = current_weapons.next
-            new_weapons.next = successor_node
-            new_weapons.prev = current_weapons
-            current_weapons.next = new_weapons
-            if self.tail_weapons is current_weapons:
-                self.tail_weapons = new_weapons
-            else:
-                successor_node.prev = new_weapons
-
-    def remove_from_inventory_weapons(self, current_weapons):
-        predecessor_node = current_weapons.prev
-        successor_node = current_weapons.next
-
-        if current_weapons is self.head_weapons:
-            self.head_weapons = successor_node
-        else:
-            predecessor_node.next = successor_node
-
-        if current_weapons is self.tail_weapons:
-            self.tail_weapons = predecessor_node
-        else:
-            successor_node.prev = predecessor_node
-
-        if successor_node is not None:
-            successor_node.prev = predecessor_node
-
-    def insertion_sort_inventory_weapons(self):
-        current_weapons = self.head_weapons.next
-
-        while current_weapons is not None:
-            next_weapons = current_weapons.next
-            search_node = current_weapons.prev
-
-            while (search_node is not None) and (search_node.data > current_weapons.data):
-                search_node = search_node.prev
-
-            self.remove_from_inventory_weapons(current_weapons)
-            if search_node is None:
-                current_weapons.prev = None
-                self.prepend_to_inventory_weapons(current_weapons)
-
-            else:
-                self.insert_after_in_inventory_weapons(search_node, current_weapons)
-
-            current_weapons = next_weapons
-
-    # armor inventory
-    def append_to_inventory_armor(self, new_armor):
-        if self.head_armor is None:
-            self.head_armor = new_armor
-            self.tail_armor = new_armor
-        else:
-            self.tail_armor.next = new_armor
-            new_armor.prev = self.tail_armor
-            self.tail_armor = new_armor
-
-    def prepend_to_inventory_armor(self, new_armor):
-        if self.head_armor is None:
-            self.head_armor = new_armor
-            self.tail_armor = new_armor
-        else:
-            new_armor.next = self.head_armor
-            self.head_armor.prev = new_armor
-            self.head_armor = new_armor
-
-    def insert_after_in_inventory_armor(self, current_armor, new_armor):
-        if self.head_armor is None:
-            self.head_armor = new_armor
-            self.tail_armor = new_armor
-        else:
-            successor_node = current_armor.next
-            new_armor.next = successor_node
-            new_armor.prev = current_armor
-            current_armor.next = new_armor
-            if self.tail_armor is current_armor:
-                self.tail_armor = new_armor
-            else:
-                successor_node.prev = new_armor
-
-    def remove_from_inventory_armor(self, current_armor):
-        predecessor_node = current_armor.prev
-        successor_node = current_armor.next
-
-        if current_armor is self.head_armor:
-            self.head_armor = successor_node
-        else:
-            predecessor_node.next = successor_node
-
-        if current_armor is self.tail_armor:
-            self.tail_armor = predecessor_node
-        else:
-            successor_node.prev = predecessor_node
-
-        if successor_node is not None:
-            successor_node.prev = predecessor_node
-
-    def insertion_sort_inventory_armor(self):
-        current_armor = self.head_armor.next
-
-        while current_armor is not None:
-            next_armor = current_armor.next
-            search_node = current_armor.prev
-
-            while (search_node is not None) and (search_node.data > current_armor.data):
-                search_node = search_node.prev
-
-            self.remove_from_inventory_armor(current_armor)
-            if search_node is None:
-                current_armor.prev = None
-                self.prepend_to_inventory_weapons(current_armor)
-
-            else:
-                self.insert_after_in_inventory_weapons(search_node, current_armor)
-
-            current_armor = next_armor
-
-    # loot inventory
-    def append_to_inventory_loot(self, new_loot):
-        if self.head_loot is None:
-            self.head_loot = new_loot
-            self.tail_loot = new_loot
-        else:
-            self.tail_loot.next = new_loot
-            new_loot.prev = self.tail_loot
-            self.tail_loot = new_loot
-
-    def prepend_to_inventory_loot(self, new_loot):
-        if self.head_loot is None:
-            self.head_loot = new_loot
-            self.tail_loot = new_loot
-        else:
-            new_loot.next = self.head_loot
-            self.head_loot.prev = new_loot
-            self.head_loot = new_loot
-
-    def insert_after_in_inventory_loot(self, current_loot, new_loot):
-        if self.head_loot is None:
-            self.head_loot = new_loot
-            self.tail_loot = new_loot
-        else:
-            successor_node = current_loot.next
-            new_loot.next = successor_node
-            new_loot.prev = current_loot
-            current_loot.next = new_loot
-            if self.tail_loot is current_loot:
-                self.tail_loot = new_loot
-            else:
-                successor_node.prev = new_loot
-
-    def remove_from_inventory_loot(self, current_loot):
-        predecessor_node = current_loot.prev
-        successor_node = current_loot.next
-
-        if current_loot is self.head_loot:
-            self.head_loot = successor_node
-        else:
-            predecessor_node.next = successor_node
-
-        if current_loot is self.tail_loot:
-            self.tail_loot = predecessor_node
-        else:
-            successor_node.prev = predecessor_node
-
-        if successor_node is not None:
-            successor_node.prev = predecessor_node
-
-    def insertion_sort_inventory_loot(self):
-        current_loot = self.head_loot.next
-
-        while current_loot is not None:
-            next_loot = current_loot.next
-            search_node = current_loot.prev
-
-            while (search_node is not None) and (search_node.data > current_loot.data):
-                search_node = search_node.prev
-
-            self.remove_from_inventory_loot(current_loot)
-            if search_node is None:
-                current_loot.prev = None
-                self.prepend_to_inventory_weapons(current_loot)
-
-            else:
-                self.insert_after_in_inventory_weapons(search_node, current_loot)
-
-            current_loot = next_loot
 
 def troll_c():
     print("  ⋌⁻⁻⋋.-⁻⁻⁻⁻⁻-.⋌⁻⁻⋋  ")
-    print("  \ ./       \. /  ")
-    print("   \ | ≤≥⁽ ⁾≤≥ | /  ")
-    print("    ⋁\._^__^_./⋁  ")
+    print("  \ ./          \. /  ")
+    print("   \ | ≤≥⁽  ⁾≤≥ | /   ")
+    print("    ⋁\ ._^__^_. /⋁     ")
     return
+
+
 def human_c():
     print('         ||||| ')
     print('          o   o')
     print('            >' )
     print('          ooooo')
     return
+
+
 def ratman_c():
     print('   .--,       .--,')
     print('  ( (  \.---./  ) ) ')
     print("   '.__/o   o\__.' ")
     print('      {=  ^  =}')
     return
+
+
 def goblin_c():
     print('       .-----.    ')
     print("     \⸃)      (⸂/   ")
     print('      \≤≥ ⋎ ≤≥/    ')
     print("       '^---^'   ")
     return
+
+
 def orc_c():
     print('      .------.          ')
     print('  .  / __  __ \ .')
@@ -382,32 +149,45 @@ def orc_c():
     print('     \ ▴_\/_▴ / ')
     print("      \______/   ")
     return
+
+
 def hobgoblin_c():
     print("     .-⁻⁻⁻⁻⁻⁻⁻-.   ")
-    print("    / ⋰⋱ ⋰⋱ \  ")
-    print("   /⋰≤≥ \ / ≤≥⋱\ ")
-    print("   ∖⋱        ⋰/ ")
+    print("    / ⋰⋱   ⋰⋱ \  ")
+    print("   /⋰≤≥ \  / ≤≥⋱\ ")
+    print("   ∖⋱          ⋰/ ")
     return
+
+
 def body_figure1():
     print('     .⁻⁻||⁻⁻.')
     print("    / / || \ \ ")
     print('   (_/  ||  \_)')
+
+
 def body_figure2():
     print('     .⁻⁻    ⁻⁻.')
     print("    / / |  | \ \ ")
     print('   (_/  |  |  \_)')
+
+
 def body_figure3():
     print('      .⁻⁻    ⁻⁻.')
     print("     / /\    /\ \ ")
     print('    (_/ |    | \_)')
+
+
 def body_figure4():
     print("    .⁻⁻       ⁻⁻.    ")
     print("   / /\ ._|_, /\ \  ")
     print("  (_/ |       | \_)   ")
+
+
 def body_figure5():
     print("   .⁻⁻    Y    ⁻⁻.    ")
     print("  /  Y  ._|_,  Y  \  ")
     print("( _/ |         | \_ )   ")
+
 
 ##########################################################################
 
@@ -455,6 +235,7 @@ def make_monster():
     if ran_mon_race == 'Troll':
         troll_c()
 
+
     if ran_mon_size == 'Puny':
         body_figure1()
     if ran_mon_size == 'Smallish':
@@ -466,112 +247,45 @@ def make_monster():
     if ran_mon_size == 'Huge':
         body_figure5()
 
+
+#FIXME - add Curtis' gold generation code
     global monster_gp
     monster_gp = monster_hp * 2
     global monster_xp
     monster_xp = monster_hp * 2
 
 #Monster Armor Generator
-# def make_armor():
-#     ran_mon_armor_mat = random.choice(armor_mat)
-#     ran_mon_armor_type = random.choice(armor_type)
-#     global armor
-#     armor = ran_mon_armor_mat + ' ' + ran_mon_armor_type
-#     global mon_armor_points
-#     mon_armor_points = ((int(armor_mat.index(ran_mon_armor_mat)) + int(armor_type.index(ran_mon_armor_type)) + 2) / 2)
-#     global mon_armor_worth
-#     mon_armor_worth = int(mon_armor_points * 2)
-#     global armor_node
-#     armor_node = Node({armor})
-
-class AllArmor:
-    def __init__(self):
-        self.armor_name = str(armor_mat) + ' ' + str(armor_type)
-        self.ran_mon_armor_mat = random.choice(armor_mat)
-        self.ran_mon_armor_type = random.choice(armor_type)
-        self.armor_points = (
-                int(armor_mat.index(self.ran_mon_armor_mat)) + int(armor_type.index(self.ran_mon_armor_type)) + 2 / 2)
-        self.mon_armor_worth = int(self.armor_points * 2)
-
-    def __str__(self):  # description
-        return str(self.armor_name) + ": Worth" + str(self.mon_armor_worth) + "Gold, and has" + str(
-            self.armor_points) + "armor points."
-
-
-class ArmorNode(AllArmor):
-    def __init__(self):
-        super(ArmorNode, self)
-        super().__init__()
-        self.data = self.armor_name
-        self.prev = None
-        self.next = None
+def make_armor():
+    ran_mon_armor_mat = random.choice(armor_mat)
+    ran_mon_armor_type = random.choice(armor_type)
+    global armor
+    armor = ran_mon_armor_mat + ' ' + ran_mon_armor_type
+    global mon_armor_points
+    mon_armor_points = ((int(armor_mat.index(ran_mon_armor_mat)) + int(armor_type.index(ran_mon_armor_type)) + 2) / 2)
+    global mon_armor_worth
+    mon_armor_worth = int(mon_armor_points * 2)
 
 #Monster Weapon Generator
-# def make_weapon():
-#     ran_mon_wep_mat = random.choice(weapon_mat)
-#     ran_mon_wep_type = random.choice(weapon_type)
-#     global weapon
-#     weapon = ran_mon_wep_mat + ' ' + ran_mon_wep_type
-#     global mon_wep_dam
-#     mon_wep_dam = int(weapon_mat.index(ran_mon_wep_mat)) + int(weapon_type.index(ran_mon_wep_type)) + 2
-#     global weapon_node
-
-class AllWeapon:
-    def __init__(self):
-        self.weapon = str(weapon_mat) + ' ' + str(weapon_type)
-        self.ran_mon_wep_mat = random.choice(weapon_mat)
-        self.ran_mon_wep_type = random.choice(weapon_type)
-        self.mon_wep_dam = (
-                (int(weapon_mat.index(self.ran_mon_wep_mat))) + (int(weapon_type.index(self.ran_mon_wep_type))) + 2)
-        self.weap_value = int(self.mon_wep_dam / 2)
-
-    def __str__(self):  # description
-        return str(self.weapon) + ": Worth" + str(self.weap_value) + "Gold, and does" + str(
-            self.mon_wep_dam) + " damage."
-
-class WeaponNode(AllWeapon):
-    def __init__(self):
-        super(WeaponNode, self)
-        super().__init__()
-        self.data = self.weapon
-        self.prev = None
-        self.next = None
+def make_weapon():
+    ran_mon_wep_mat = random.choice(weapon_mat)
+    ran_mon_wep_type = random.choice(weapon_type)
+    global weapon
+    weapon = ran_mon_wep_mat + ' ' + ran_mon_wep_type
+    global mon_wep_dam
+    mon_wep_dam = int(weapon_mat.index(ran_mon_wep_mat)) + int(weapon_type.index(ran_mon_wep_type)) + 2
 
 #Monster Loot Generator
-# def make_loot():
-#     ran_junk1 = random.choice(junk_loot)
-#     junk1_value = 1
-#     ran_junk2 = random.choice(junk_loot)
-#     junk2_value = 1
-#     ran_treasure = random.choice(treasure_loot)
-#     treasure_value = int(treasure_loot.index(ran_treasure))*10
-#     global monster_bag
-#     monster_bag = ran_junk1 + ', ' + ran_junk2 + ', ' + ran_treasure
-#     global monster_bag_value
-#     monster_bag_value = int(junk1_value + junk2_value + treasure_value)
-
-class DropLoot:
-    def __init__(self):
-        self.monster_bag = ran_junk1 + ', ' + ran_junk2 + ', ' + ran_treasure
-        self.ran_junk1 = random.choice(junk_loot)
-        self.junk1_value = 1
-        self.ran_junk2 = random.choice(junk_loot)
-        self.junk2_value = 1
-        self.ran_treasure = random.choice(treasure_loot)
-        self.treasure_value = int(treasure_loot.index(ran_treasure))*10
-        self.monster_bag_value = int(junk1_value + junk2_value + treasure_value)
-
-    def __str__(self):  # description
-        return (str(self.monster_bag) + "'s loot") + ": Worth" + str(self.monster_bag_value) + "gold, contains" + str(
-            self.ran_junk1) + ", " + str(self.ran_junk2) + ", and" + (str(self.ran_treasure) + ".")
-
-class DropLootNode(DropLoot):
-    def __init__(self):
-        super(DropLootNode, self)
-        super().__init__()
-        self.data = self.monster_bag
-        self.prev = None
-        self.next = None
+def make_loot():
+    ran_junk1 = random.choice(junk_loot)
+    junk1_value = 1
+    ran_junk2 = random.choice(junk_loot)
+    junk2_value = 1
+    ran_treasure = random.choice(treasure_loot)
+    treasure_value = int(treasure_loot.index(ran_treasure))*10
+    global monster_bag
+    monster_bag = ran_junk1 + ', ' + ran_junk2 + ', ' + ran_treasure
+    global monster_bag_value
+    monster_bag_value = int(junk1_value + junk2_value + treasure_value)
 
 #---------------------------------------------------------------------
 
@@ -591,6 +305,7 @@ player_armor_points = 0
 
 
 def monster_fight():
+    import os
     global monster
     global monster_hp
     global monster_gp
@@ -607,10 +322,7 @@ def monster_fight():
     global mon_armor_points
     global player_armor
     global player_armor_points
-    global monster_bag
     global monster_bag_value
-    global weapon_node
-    global armor_node
     total_damage = player_wep_dam - mon_armor_points
 
     print(f'You encountered a {monster} wielding a {weapon}. It appears to be wearing a {armor}.')
@@ -644,14 +356,11 @@ def monster_fight():
                 print('Congratulations, you killed it!')
                 player_xp += monster_xp
                 monster_kills += 1
-                print(f"You loot the {monster} and find a bag containing")
-                print(f"{monster_bag}, and {monster_gp} gold pieces.")
+                print(f"You loot the {monster} and find a bag containing {monster_bag}, and {monster_gp} gold pieces.")
                 print(f"Of course, it's also carrying its {weapon} and wearing that {armor}.")
-                new_wep = input(f"Do you want to use the {monster}'s {weapon}, and put your {player_weapon} away?\n")
+                new_wep = input(f"Do you want to keep the {monster}'s {weapon}, and put your {player_weapon} away?\n")
                 if new_wep == 'Yes':
                     #FIXME Add player_weapon to player_inv_weps
-                    player_inv = Inventory()
-                    player_inv.append_to_inventory_weapons({player_weapon})
                     print(f"Sweet! You've got a nice new {weapon} now. You toss that piece of junk {player_weapon} in your bag.")
                     print(f"Maybe it'll be worth a few gold.")
                     player_weapon = weapon
@@ -659,8 +368,6 @@ def monster_fight():
                     keep_wep = input(f"Do you want to hang on to the {weapon}? It might be worth something.")
                     if keep_wep == 'Yes':
                         #FIXME Add weapon to player_inv_weps
-                        player_inv = Inventory()
-                        player_inv.append_to_inventory_weapons({weapon})
                         print(f"You stick the {weapon} in your bag. Maybe it'll be worth something.")
                     elif keep_wep == 'No':
                         print(f"You're right, it's not worth the trouble. You chuck the {weapon} into the corner of the dungeon and")
@@ -671,8 +378,6 @@ def monster_fight():
                 if new_armor == 'Yes':
                     print(f"You pull your {player_armor} off and store it neatly in your pack.")
                     #FIXME Add player_armor to player_inv_armor
-                    player_inv = Inventory()
-                    player_inv.prepend_to_inventory_armor({player_armor})
                     player_armor = armor
                     player_armor_points = mon_armor_points
                     print(f"You put on the {monster}'s {armor}, which somehow fits you perfectly. This ought to help out.")
@@ -680,18 +385,12 @@ def monster_fight():
                     keep_armor = input(f"Do you want to save the {armor} for a rainy day? Maybe you can sell it?")
                     if keep_armor == 'Yes':
                         #FIXME Add armor to player_inv_armor
-                        temp_armor = Inventory()
-                        temp_armor.prepend_to_inventory_armor({armor})
                         print(f"Smart. You stick the {armor} into your bag.")
                     elif keep_armor == 'No':
                         print(f"Yeah, that makes sense. Peeling a {armor} off a dead guy? Ew.")
                 else:
                     print(f"Invalid command.")
                 player_gp += monster_gp
-                player_inv = Inventory()
-                player_inv.append_to_inventory_loot({ran_junk1})
-                player_inv.append_to_inventory_loot({ran_junk2})
-                player_inv.append_to_inventory_loot({ran_treasure})
                 print(f'Player GP: {player_gp}, Player XP: {player_xp}, Monsters Killed: {monster_kills}')
             if monster_hp > 0:
                 keepon = input('What do you want to do? Attack or Run?\n')
@@ -705,12 +404,12 @@ def goto_dungeon():
     wp()
     insert_logo()
     dungeon_journey()
-    enter_dungeon = input("Do you wish to enter the Dungeon, " + name +"? (Yes/No)\n")
+    enter_dungeon = input("Do you wish to enter the Dungeon " + name +"? (Yes/No)\n")
     if enter_dungeon == 'Yes' or enter_dungeon == 'yes':
         make_monster()
-        AllArmor()
-        AllWeapon()
-        DropLoot()
+        make_weapon()
+        make_armor()
+        make_loot()
         monster_fight()
     if player_gp >= 100:
         print("Congratulations! You've earned enough gold to settle down and retire.\nGame over.")
@@ -804,7 +503,7 @@ def goto_blacksmith():
             player_wep_dam += 1
             player_weapon += '+'
             print(f'{player_weapon} {player_wep_dam}')
-    where_to = input("Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, Merchant, and Home.\n")
+    where_to = input("Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, and Home.\n")
     if where_to == 'Dungeon':
         goto_dungeon()
     if where_to == 'Blacksmith':
@@ -813,8 +512,6 @@ def goto_blacksmith():
         goto_temple()
     if where_to == 'Home':
         goto_home()
-    if where_to == 'Merchant':
-        goto_merchant()
 
 def goto_temple():
     os.system('cls')
@@ -837,7 +534,7 @@ def goto_temple():
         if player_xp < 10:
             print(f"The Temple Maiden shakes her head sadly.")
             print(f"My dear {name}, I am sorry. You must complete more trials before I can help you.")
-    where_to = input("Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, Merchant, and Home.\n")
+    where_to = input("Where would you like to go now? Available options are Dungeon, Blacksmith, Temple, and Home.\n")
     if where_to == 'Dungeon':
         goto_dungeon()
     if where_to == 'Blacksmith':
@@ -846,8 +543,6 @@ def goto_temple():
         goto_temple()
     if where_to == 'Home':
         goto_home()
-    if where_to == 'Merchant':
-        goto_merchant()
 
 def goto_home():
     os.system('cls')
@@ -858,42 +553,23 @@ def goto_home():
     print(f"Or do you want to just stay inside? If not, you can Leave.")
     home_options = input("Store, Retrieve, Rest, Quit, or Leave?\n")
 
-    def goto_home():
-    os.system('cls')
-    wp()
-    insert_logo()
-    global player_hp
-    print(f"Welcome home, {name}. Do you need to Store items? Or perhaps Retrieve something? Would you like to Rest and recover HP?")
-    print(f"Or do you want to just stay inside? If not, you can Leave.")
-    home_options = input("Store, Retrieve, Rest, Quit, or Leave?\n")
-
     if home_options == "Store":
-        item_to_store = print(f"What items would you like to store in your vault?")
+        print(f"What items would you like to store in your vault?")
         #FIXME list player inventory
-        list_inventory(player_inv)
-
         #remove items from player inventory
         #add items to home inventory
-        remove_from_inventory(player_inv, item_to_store)
-        add_to_inventory(home_inv, item_to_store)
         print(f"What would you like to do now? Do you wish to rest? Do you need to get anything out of storage? Would you like to stay inside")
         print(f"forever? Or do you have business elsewhere?")
         home_options = input("Rest, Retrieve, Quit, or Leave?\n")
 
     if home_options == 'Retrieve':
-        home_inv = Inventory()
         print(f"What items would you like to store in your vault?")
-        print("Inventory():")
-        list_inventory(home_inv)
-        remove_from_inventory(home_inv, )
-        add_to_inventory(player_inv, )
-            #FIXME list home inventory
-            #remove items from home inventory
+        # FIXME list home inventory
+        # remove items from home inventory
         # add items to player inventory
         print(f"What would you like to do now? Do you need to store any items? Do you wish to rest? Would you like to stay inside forever?")
         print(f"Or do you have business elsewhere?")
         home_options = input("Store, Rest, Quit, or Leave?\n")
-
 
     if home_options == 'Rest':
         player_hp = total_player_hp
